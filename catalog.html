@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Каталог смартфонів — Мобі-Гід</title>
+</head>
+<body>
+
+  <header>
+    <h1>Мобі-Гід — довідник смартфонів</h1>
+    <nav aria-label="Головне меню">
+      <ul>
+        <li><a href="index.html">Головна</a></li>
+        <li><a href="catalog.html">Смартфони</a></li>
+        <li><a href="#">Порівняння</a></li>
+        <li><a href="#">Замовлення</a></li>
+        <li><a href="#">Контакти</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- Перше зображення — у видимій зоні, без lazy loading -->
+    <section>
+      <h2>Смартфони в каталозі</h2>
+      <img src="images/smartphones-hero.jpg" alt="Кілька сучасних смартфонів різних брендів, розкладених на столі" width="800" height="450">
+      <p>Тут зібрано моделі смартфонів різних брендів і років випуску — від бюджетних до флагманських. Кожна модель має повний набір характеристик: екран, акумулятор, камеру та підтримувані функції.</p>
+    </section>
+
+    <!-- Розділи каталогу: вкладені списки -->
+    <section>
+      <h2>Розділи каталогу</h2>
+      <ul>
+        <li>За брендом
+          <ul>
+            <li>Samsung
+              <ul>
+                <li>Galaxy S-серія (флагмани)</li>
+                <li>Galaxy A-серія (середній клас)</li>
+              </ul>
+            </li>
+            <li>Xiaomi
+              <ul>
+                <li>Redmi Note</li>
+                <li>Poco</li>
+              </ul>
+            </li>
+            <li>Apple</li>
+            <li>Google Pixel</li>
+          </ul>
+        </li>
+        <li>За ціновою категорією
+          <ul>
+            <li>Бюджетні (до 10 000 грн)</li>
+            <li>Середній клас (10 000–20 000 грн)</li>
+            <li>Флагмани (від 20 000 грн)</li>
+          </ul>
+        </li>
+        <li>За функціями
+          <ul>
+            <li>Підтримка 5G</li>
+            <li>NFC для безконтактної оплати</li>
+            <li>Захист IP68</li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Нумеровані списки: як замовити -->
+    <section>
+      <h2>Як замовити смартфон</h2>
+      <ol>
+        <li>Оберіть модель у каталозі та ознайомтеся з характеристиками.</li>
+        <li>Натисніть «Замовити» на сторінці обраної моделі.</li>
+        <li>Вкажіть бажаний обсяг пам'яті зі списку доступних варіантів.</li>
+        <li>Заповніть контактні дані для зв'язку.</li>
+        <li>Оберіть спосіб доставки — кур'єром або самовивіз.</li>
+      </ol>
+      <p>Після оформлення замовлення менеджер зв'яжеться з вами протягом робочого дня для підтвердження деталей.</p>
+      <ol start="6">
+        <li>Дочекайтеся дзвінка менеджера для підтвердження замовлення.</li>
+        <li>Отримайте смартфон і перевірте комплектацію при отриманні.</li>
+      </ol>
+    </section>
+
+    <!-- Глосарій -->
+    <section>
+      <h2>Глосарій</h2>
+      <dl>
+        <dt>SKU</dt>
+        <dd>Складський ідентифікатор товару у форматі SKU-PH-11450, що дозволяє однозначно визначити модель на складі.</dd>
+
+        <dt>NFC</dt>
+        <dd>Технологія безконтактного зв'язку ближньої дії, яка використовується для оплати смартфоном.</dd>
+
+        <dt>IP68</dt>
+        <dd>Клас захисту корпусу від пилу та занурення у воду на глибину до 1,5 м протягом 30 хвилин.</dd>
+
+        <dt>5G</dt>
+        <dt>NFC</dt>
+        <dd>Обидві функції належать до бездротових технологій зв'язку, що підтримуються частиною моделей каталогу.</dd>
+      </dl>
+    </section>
+
+    <!-- Таблиця даних -->
+    <section>
+      <h2>Таблиця смартфонів</h2>
+      <table>
+        <caption>Характеристики смартфонів каталогу «Мобі-Гід»</caption>
+        <thead>
+          <tr>
+            <th rowspan="2" scope="col">Модель</th>
+            <th rowspan="2" scope="col">Бренд</th>
+            <th colspan="2" scope="colgroup">Характеристики</th>
+            <th rowspan="2" scope="col">Рік випуску</th>
+          </tr>
+          <tr>
+            <th scope="col">Екран</th>
+            <th scope="col">Акумулятор</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Galaxy S23</th>
+            <td rowspan="2">Samsung</td>
+            <td>6.1"</td>
+            <td>3900 мАг</td>
+            <td>2023</td>
+          </tr>
+          <tr>
+            <th scope="row">Galaxy A54</th>
+            <td>6.4"</td>
+            <td>5000 мАг</td>
+            <td>2023</td>
+          </tr>
+          <tr>
+            <th scope="row">Redmi Note 12</th>
+            <td rowspan="2">Xiaomi</td>
+            <td>6.67"</td>
+            <td>5000 мАг</td>
+            <td>2022</td>
+          </tr>
+          <tr>
+            <th scope="row">Poco X5 Pro</th>
+            <td>6.67"</td>
+            <td>5000 мАг</td>
+            <td>2023</td>
+          </tr>
+          <tr>
+            <th scope="row">iPhone 14</th>
+            <td>Apple</td>
+            <td>6.1"</td>
+            <td>3279 мАг</td>
+            <td>2022</td>
+          </tr>
+          <tr>
+            <th scope="row">Pixel 7</th>
+            <td>Google</td>
+            <td>6.3"</td>
+            <td>4355 мАг</td>
+            <td>2022</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Details / Summary -->
+    <section>
+      <h2>Характеристики камер</h2>
+
+      <details open>
+        <summary>Galaxy S23 — камера</summary>
+        <p>Основна камера 50 Мп, ширококутна 12 Мп, телефото 10 Мп, запис відео у роздільній здатності до 8K.</p>
+      </details>
+
+      <details>
+        <summary>Redmi Note 12 — камера</summary>
+        <p>Основна камера 48 Мп, ширококутна 8 Мп, макрооб'єктив 2 Мп, запис відео у роздільній здатності Full HD.</p>
+      </details>
+
+      <details>
+        <summary>iPhone 14 — камера</summary>
+        <p>Основна камера 12 Мп, ширококутна 12 Мп, запис відео у роздільній здатності до 4K із стабілізацією Cinematic mode.</p>
+      </details>
+
+      <details>
+        <summary>Pixel 7 — камера</summary>
+        <p>Основна камера 50 Мп, ширококутна 12 Мп, запис відео у роздільній здатності до 4K з обчислювальною фотографією Google.</p>
+      </details>
+
+    </section>
+
+    <!-- Друге і третє зображення, одне з figure/figcaption -->
+    <section>
+      <h2>Обрані моделі</h2>
+
+      <figure>
+        <img src="images/samsung-galaxy-s23.jpg" alt="Смартфон Samsung Galaxy S23 чорного кольору, вигляд спереду" width="400" height="500" loading="lazy">
+        <figcaption>Samsung Galaxy S23 — флагманська модель 2023 року з екраном 6.1 дюйма.</figcaption>
+      </figure>
+
+      <img src="images/xiaomi-redmi-note-12.jpg" alt="Смартфон Xiaomi Redmi Note 12 синього кольору, вигляд ззаду" width="400" height="500" loading="lazy">
+
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Група 1 2 курс, Тупиця Дмитро, 2026</p>
+  </footer>
+
+</body>
+</html>
