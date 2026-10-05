@@ -1,0 +1,93 @@
+/* ==========================================================
+   Проєкт: Мобі-Гід (довідник смартфонів)
+   Варіант: 10
+   Автор: Тупиця Дмитро
+   Дата: жовтень 2026
+   ========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;700&subset=cyrillic&display=swap');
+
+/* --- Палітра і змінні --- */
+:root {
+  --color-brand: hsl(222 47% 18%);
+  --color-brand-dark: hsl(222 47% 11%);
+  --color-accent: hsl(174 80% 28%);
+  --color-bg: hsl(210 25% 98%);
+  --color-surface: hsl(214 32% 94%);
+  --color-text: hsl(222 30% 12%);
+  --color-muted: hsl(220 12% 38%);
+  --color-border: hsl(214 20% 78%);
+  --color-on-brand: hsl(0 0% 100%);
+  --color-visited: hsl(275 45% 38%);
+  --color-ok: hsl(142 60% 30%);
+  --color-ok-bg: hsl(142 50% 94%);
+  --color-error: hsl(0 70% 42%);
+  --color-error-bg: hsl(0 85% 96%);
+
+  --font-heading: "Montserrat", "Arial Black", Arial, sans-serif;
+  --font-body: "Roboto", Arial, Helvetica, sans-serif;
+  --radius: 8px;
+  --space: 1rem;
+  --shadow: 0 2px 8px rgb(0 0 0 / 10%);
+  --max-width: 60rem;
+}
+
+/* --- Базова типографіка --- */
+html {
+  font-size: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 2rem;
+  color: var(--color-brand);
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: var(--color-brand);
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+/* Ширина абзаців обмежена, щоб рядки не розтягувалися на весь екран */
+p {
+  max-width: 65ch;
+}
+
+strong {
+  font-weight: 700;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+}
+
+/* --- Загальна сітка сторінки --- */
+main,
+body > aside {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space);
+}
+
+main > section {
+  margin-bottom: 2rem;
+}
