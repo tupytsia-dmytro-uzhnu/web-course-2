@@ -324,3 +324,124 @@ tbody tr:nth-child(even) {
 tbody tr:hover {
   background: var(--color-border);
 }
+/* --- Форма замовлення --- */
+fieldset {
+  margin: 0 0 var(--space);
+  padding: var(--space);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+legend {
+  padding: 0 0.5rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-brand);
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 0.25rem;
+}
+
+/* :where() має нульову специфічність, тому стани :focus нижче легко перекривають цю рамку */
+:where(input:not([type="radio"], [type="checkbox"]), select, textarea) {
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+/* Псевдоклас :not(): однакова ширина й padding для всіх полів, крім radio і checkbox */
+input:not([type="radio"]):not([type="checkbox"]),
+select,
+textarea {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 28rem;
+  padding: 0.6rem 0.75rem;
+}
+
+::placeholder {
+  color: var(--color-muted);
+}
+
+/* Підсвітка стану поля. Тут :focus:invalid, а не просто :invalid, бо після
+   завантаження всі обов'язкові порожні поля вже невалідні: без :focus уся
+   форма одразу стала б червоною. З :focus підсвічується лише те поле,
+   у якому користувач зараз друкує. */
+input:focus:invalid,
+textarea:focus:invalid {
+  border-color: var(--color-error);
+  background: var(--color-error-bg);
+}
+
+input:focus:valid,
+textarea:focus:valid {
+  border-color: var(--color-ok);
+  background: var(--color-ok-bg);
+}
+
+/* Обов'язкові поля: зірочка через псевдоелемент ::after.
+   Абзац, у якому є обов'язкове поле, отримує зірочку після підпису */
+p:has(:required) > label::after {
+  content: " *";
+  color: var(--color-error);
+}
+
+/* Псевдоклас :checked і комбінатор "+": підпис одразу після позначеного
+   radio або checkbox стає жирним і кольоровим */
+input:checked + label {
+  font-weight: 700;
+  color: var(--color-brand);
+}
+
+input[type="radio"] + label,
+input[type="checkbox"] + label {
+  margin-right: 1rem;
+}
+
+/* Кнопки: різний вигляд через атрибутний селектор, без класів */
+button {
+  padding: 0.65rem 1.25rem;
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button[type="submit"] {
+  background: var(--color-accent);
+  color: var(--color-on-brand);
+}
+
+button[type="reset"] {
+  background: var(--color-bg);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+/* --- Демонстрація специфічності ---
+   Претенденти на колір заголовка картки (h3 у блоці #promo):
+   h3        → (0,0,1): 0 id, 0 класів, 1 тег
+   .card h3  → (0,1,1): 0 id, 1 клас, 1 тег
+   #promo h3 → (1,0,1): 1 id, 0 класів, 1 тег ← перемагає
+   Трійки порівнюємо зліва направо, як номер версії: у #promo h3 одиниця
+   в першій колонці, тому решта вже не має значення. Скільки б класів я
+   не додав, вони не наздоженуть один id, саме тому id для стилів
+   не використовують. */
+/* h3 { color: var(--color-text); } */
+/* .card h3 { color: var(--color-muted); } */
+#promo h3 {
+  color: var(--color-brand);
+}
+
+/* Inline-стиль на кшталт <h3 style="color: red"> мав би специфічність
+   (1,0,0,0) і переміг би всі три правила вище. Це поганий спосіб виграти:
+   стиль потрапляє в розмітку, його неможливо змінити з файлу стилів,
+   а правила розкидані по сторінці. */
+/* <h3 style="color: red">iPhone 15</h3> */
