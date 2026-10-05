@@ -269,3 +269,58 @@ summary {
   cursor: pointer;
   font-weight: 700;
 }
+/* --- Таблиця каталогу (без класів у комірках) --- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space) 0 2rem;
+}
+
+caption {
+  margin-bottom: 0.5rem;
+  text-align: left;
+  font-family: var(--font-heading);
+  font-weight: 700;
+}
+
+th,
+td {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--color-border);
+  text-align: left;
+}
+
+/* Єдине місце з letter-spacing: текст у шапці набрано великими літерами */
+thead th {
+  background: var(--color-brand);
+  color: var(--color-on-brand);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Заголовки колонок з числами вирівнюємо праворуч, "Характеристики" по центру */
+thead tr:first-child th:nth-child(3),
+thead tr:nth-child(2) th {
+  text-align: right;
+}
+
+thead tr:first-child th:nth-child(4) {
+  text-align: center;
+}
+
+/* Останні три комірки кожного рядка (рік, екран, акумулятор) містять числа */
+td:nth-last-child(-n + 3) {
+  text-align: right;
+}
+
+/* Зебра: формула an+b. У виразі even (те саме, що 2n) n = 0, 1, 2, ...,
+   тож 2n дає 0, 2, 4, 6, тобто стилі отримують 2-й, 4-й, 6-й рядки
+   тіла таблиці. Для 2n+1 (odd) було б 1, 3, 5, тобто непарні рядки. */
+tbody tr:nth-child(even) {
+  background: var(--color-surface);
+}
+
+tbody tr:hover {
+  background: var(--color-border);
+}
