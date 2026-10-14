@@ -1,0 +1,35 @@
+/* ==========================================================
+   Проєкт: «Мобі-Гід» — довідник смартфонів
+   Варіант: 10 (Каталог мобільних телефонів)
+   Автор: Тупиця Дмитро
+   Дата: 14.10.2026
+   ========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&subset=cyrillic&display=swap');
+
+/* Палітра «мінімалістична»: багато білого, графітовий текст, синій акцент.
+   Шрифт Inter (є кирилиця), накреслення 400 і 700 — разом два. */
+:root {
+  --color-brand: hsl(220 14% 20%);
+  --color-accent: hsl(215 90% 42%);
+  --color-bg: hsl(0 0% 100%);
+  --color-surface: hsl(215 20% 97%);
+  --color-text: hsl(220 14% 16%);
+  --color-muted: hsl(220 10% 38%);
+  --color-on-brand: hsl(0 0% 100%);
+  --color-border: hsl(215 14% 86%);
+  --color-pill-bg: hsl(215 80% 95%);
+  --color-valid: hsl(145 55% 32%);
+  --color-valid-bg: hsl(145 45% 95%);
+  --color-invalid: hsl(0 65% 42%);
+  --color-invalid-bg: hsl(0 80% 96%);
+
+  --font-body: "Inter", system-ui, "Segoe UI", Arial, sans-serif;
+  --font-heading: "Inter", system-ui, "Segoe UI", Arial, sans-serif;
+  --radius: 0.5rem;
+  --radius-pill: 999px;
+  --space: 1rem;
+  --shadow: 0 2px 8px rgb(0 0 0 / 8%);
+  --max-text: 65ch;
+  --max-page: 62rem;
+}
