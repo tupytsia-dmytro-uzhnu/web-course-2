@@ -166,3 +166,40 @@ summary { cursor: pointer; font-weight: 700; color: var(--color-brand); }
 }
 /* [Комбінатор сусіда +] Друга й наступні «пігулки» поспіль — із відступом зліва. */
 .pill + .pill { margin-left: 0.35rem; }
+
+/* ---------- Таблиця каталогу (LR2) ---------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space) 0 calc(var(--space) * 2);
+  /* Запасне значення: якщо змінну --shadow не оголошено (або видалено з :root),
+     браузер візьме друге значення після коми; без нього тінь просто зникла б. */
+  box-shadow: var(--shadow, 0 2px 8px rgb(0 0 0 / 10%));
+}
+
+caption {
+  caption-side: top;
+  text-align: left;
+  font-weight: 700;
+  color: var(--color-brand);
+  padding-bottom: 0.5rem;
+}
+
+th, td {
+  border: 1px solid var(--color-border);
+  padding: 0.6rem 0.85rem;
+  text-align: left;
+}
+
+thead th { background: var(--color-brand); color: var(--color-on-brand); }
+
+/* Числові колонки (3–5: рік, екран, акумулятор) — праворуч */
+th:nth-child(n+3), td:nth-child(n+3) { text-align: right; }
+
+/* Зебра. Формула an+b: even дорівнює 2n, тобто n = 0, 1, 2, 3…
+   дає 0, 2, 4, 6… — обираються 2-й, 4-й, 6-й рядки тіла таблиці
+   (кожен другий, починаючи з другого). Варіант odd (2n+1) обрав би 1-й, 3-й, 5-й. */
+tbody tr:nth-child(even) { background: var(--color-surface); }
+
+/* Підсвітка під курсором: стоїть після зебри, бо специфічність однакова */
+tbody tr:hover { background: var(--color-pill-bg); }
