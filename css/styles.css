@@ -203,3 +203,91 @@ tbody tr:nth-child(even) { background: var(--color-surface); }
 
 /* Підсвітка під курсором: стоїть після зебри, бо специфічність однакова */
 tbody tr:hover { background: var(--color-pill-bg); }
+
+/* ---------- Форма замовлення (LR3) ---------- */
+form fieldset {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  margin: 0 0 var(--space);
+  padding: var(--space) calc(var(--space) * 1.5);
+}
+legend { font-weight: 700; color: var(--color-brand); padding: 0 0.5rem; }
+
+label { display: inline-block; margin: 0.75rem 0 0.25rem; }
+
+/* Поля однакової ширини (крім радіо, чекбоксів і кнопок) */
+form input:not([type="radio"], [type="checkbox"], [type="submit"], [type="reset"]),
+form select,
+form textarea {
+  display: block;
+  width: 100%;
+  max-width: 28rem;
+  padding: 0.55rem 0.75rem;
+  font: inherit;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-muted);
+  border-radius: var(--radius);
+}
+
+input[type="radio"], input[type="checkbox"] { accent-color: var(--color-accent); }
+
+/* Стани полів. Чому :focus:invalid, а не просто :invalid: порожні обов'язкові
+   поля є :invalid одразу після завантаження, тож без :focus уся сторінка
+   стала б червоною до того, як користувач щось ввів. З :focus підсвічується
+   лише те поле, у якому зараз друкують. */
+input:focus:invalid, select:focus:invalid, textarea:focus:invalid {
+  border-color: var(--color-invalid);
+  background: var(--color-invalid-bg);
+  outline: 2px solid var(--color-invalid);
+}
+input:focus:valid, select:focus:valid, textarea:focus:valid {
+  border-color: var(--color-valid);
+  background: var(--color-valid-bg);
+  outline: 2px solid var(--color-valid);
+}
+
+/* [Псевдоклас :checked] Позначені радіо й чекбокси отримують обведення. */
+input[type="radio"]:checked, input[type="checkbox"]:checked {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* [Псевдоклас :disabled] Вимкнені поля виглядають приглушено. */
+input:disabled, select:disabled, textarea:disabled {
+  background: var(--color-surface);
+  color: var(--color-muted);
+  cursor: not-allowed;
+}
+
+/* Позначка обов'язкових полів псевдоелементом ::after: зірочка після підпису.
+   Перший селектор — поле одразу після label, другий — поле всередині label. */
+label:has(+ :required)::after,
+label:has(:required)::after {
+  content: " *";
+  color: var(--color-invalid);
+}
+
+/* Кнопки різняться атрибутним селектором за type, без доданих класів */
+button, input[type="submit"], input[type="reset"] {
+  padding: 0.6rem 1.4rem;
+  font: inherit;
+  font-weight: 700;
+  border-radius: var(--radius);
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+button[type="submit"], input[type="submit"] {
+  background: var(--color-accent);
+  color: var(--color-on-brand);
+  border: 1px solid var(--color-accent);
+}
+button[type="submit"]:hover, input[type="submit"]:hover {
+  background: var(--color-brand);
+  border-color: var(--color-brand);
+}
+button[type="reset"], input[type="reset"] {
+  background: var(--color-bg);
+  color: var(--color-brand);
+  border: 1px solid var(--color-muted);
+}
