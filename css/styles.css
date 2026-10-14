@@ -33,3 +33,136 @@
   --max-text: 65ch;
   --max-page: 62rem;
 }
+
+/* ---------- Базові стилі та типографіка ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--color-brand);
+}
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+
+p { max-width: var(--max-text); }
+img { max-width: 100%; height: auto; }
+
+/* ---------- Шапка, основний блок, футер ---------- */
+header { background: var(--color-surface); }
+header h1 { margin: 0; padding: 1.25rem 1.5rem; }
+
+main {
+  max-width: var(--max-page);
+  margin: 0 auto;
+  padding: calc(var(--space) * 2) 1.5rem;
+}
+
+footer {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  color: var(--color-muted);
+  padding: var(--space) 1.5rem;
+  font-size: 0.9rem;
+}
+
+/* ---------- Стани посилань у порядку LVHFA ---------- */
+/* Порядок LVHFA критичний: правила мають однакову специфічність, тому
+   перемагає пізніше; якщо поставити :hover перед :link, то :link, що
+   збігається з усіма посиланнями, перекриє :hover і ефект зникне. */
+a:link { color: var(--color-accent); }
+a:visited { color: var(--color-brand); }
+a:hover { color: var(--color-brand); text-decoration-thickness: 2px; }
+a:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 2px; }
+a:active { color: var(--color-muted); }
+
+/* ---------- Горизонтальне меню: список <ul> лишається списком ---------- */
+nav { background: var(--color-brand); }
+nav ul { list-style: none; margin: 0; padding-left: 0; }
+nav li { display: inline-block; }
+
+/* letter-spacing задано тільки тут — де текст у верхньому регістрі */
+nav a {
+  display: inline-block;
+  padding: 0.75rem 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.875rem;
+}
+nav a:link, nav a:visited { color: var(--color-on-brand); text-decoration: none; }
+nav a:hover { background: var(--color-accent); color: var(--color-on-brand); }
+nav a:focus-visible { outline-color: var(--color-on-brand); }
+/* Поточна сторінка: стоїть після :hover, щоб виграти за порядком */
+nav a.current { background: var(--color-bg); color: var(--color-brand); }
+
+/* ---------- Обов'язковий набір селекторів ---------- */
+/* [Псевдоклас :first-child + комбінатор «дитина» >]
+   Перший дочірній елемент <main> — без верхнього відступу. */
+main > :first-child { margin-top: 0; }
+
+/* [Псевдоклас :last-child]
+   Останній абзац футера — без нижнього відступу. */
+footer p:last-child { margin-bottom: 0; }
+
+/* [Псевдоклас :not() + :last-child + комбінатор «нащадок» (пробіл)]
+   Усі пункти списків усередині <main>, крім останнього, отримують відступ. */
+main li:not(:last-child) { margin-bottom: 0.35rem; }
+
+/* [Комбінатор сусіда +]
+   Абзац, що йде одразу після <h2>, — без верхнього відступу. */
+h2 + p { margin-top: 0; }
+
+/* [Атрибутний селектор + псевдоелемент ::after]
+   Зовнішні посилання (href починається з http) отримують стрілку ↗. */
+a[href^="http"]::after { content: " \2197"; font-size: 0.85em; }
+
+/* [Псевдоелемент ::before] Декоративна синя смужка перед заголовками h2. */
+main h2::before {
+  content: "";
+  display: inline-block;
+  width: 0.35rem;
+  height: 1em;
+  margin-right: 0.6rem;
+  background: var(--color-accent);
+  border-radius: var(--radius-pill);
+  vertical-align: -0.1em;
+}
+
+/* [Псевдоелемент ::marker] Маркери списків у <main> — акцентного кольору. */
+main ul li::marker { color: var(--color-accent); }
+
+/* ---------- details / summary ---------- */
+details {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.75rem;
+}
+summary { cursor: pointer; font-weight: 700; color: var(--color-brand); }
+
+/* ---------- «Пігулки» функцій (5G, NFC, IP68) ---------- */
+.pill {
+  display: inline-block;
+  padding: 0.15rem 0.7rem;
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-pill);
+  background: var(--color-pill-bg);
+  color: var(--color-accent);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+/* [Комбінатор сусіда +] Друга й наступні «пігулки» поспіль — із відступом зліва. */
+.pill + .pill { margin-left: 0.35rem; }
