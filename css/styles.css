@@ -399,3 +399,13 @@ button[type="reset"], input[type="reset"] {
   font-size: 0.8125rem;
   font-weight: 700;
 }
+
+/* ---------- ЛР5: липка шапка ---------- */
+/* sticky + top: 0 — шапка разом із меню лишається вгорі під час прокручування;
+   z-index: 100 тримає її над картками та бейджами. */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow, 0 2px 8px rgb(0 0 0 / 10%));
+}
