@@ -32,6 +32,9 @@
   --shadow: 0 2px 8px rgb(0 0 0 / 8%);
   --max-text: 65ch;
   --max-page: 62rem;
+  --card-width: 16rem;
+  --color-banner-from: hsl(215 90% 42%);
+  --color-banner-to: hsl(220 14% 20%);
 }
 
 /* ---------- Базові стилі та типографіка ---------- */
