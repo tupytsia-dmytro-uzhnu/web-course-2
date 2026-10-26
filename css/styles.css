@@ -316,3 +316,86 @@ button[type="reset"], input[type="reset"] {
    тому переміг би всі три правила. Це поганий спосіб виграти: стиль змішується
    з розміткою, його не можна перевизначити зі styles.css інакше, ніж зробивши ще специфічніший селектор
    і не можна перевикористати на інших елементах. */
+
+/* ---------- ЛР5: банер із градієнтом ---------- */
+/* position: relative робить банер точкою відліку для абсолютного ::after;
+   overflow: hidden обрізає частину кола, що виступає за межі банера. */
+.banner {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  padding: 2.5rem 2rem;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--color-banner-from), var(--color-banner-to));
+  color: var(--color-on-brand);
+}
+.banner h2 { margin-top: 0; color: var(--color-on-brand); }
+.banner h2::before { display: none; }
+.banner::after {
+  content: "";
+  position: absolute;
+  top: -3rem;
+  right: -3rem;
+  width: 12rem;
+  height: 12rem;
+  border: 2rem solid var(--color-on-brand);
+  border-radius: 50%;
+  opacity: 0.12;
+}
+
+/* ---------- ЛР5: картки смартфонів ---------- */
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin: var(--space) 0 calc(var(--space) * 2);
+}
+
+/* position: relative — бейдж відраховується від кутів картки;
+   overflow: hidden — фото обрізається по заокруглених кутах. */
+.card {
+  position: relative;
+  overflow: hidden;
+  width: var(--card-width);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow, 0 2px 8px rgb(0 0 0 / 10%));
+}
+
+/* Вертикальні пропорції 3:4; object-fit: cover заповнює область без спотворень */
+.card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.card-body { padding: var(--space); }
+.card p { margin: 0 0 0.25rem; }
+.card-brand { color: var(--color-muted); }
+.card-sku { font-size: 0.875rem; color: var(--color-muted); }
+
+/* Довга назва моделі обрізається трьома крапками */
+.card h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Бейдж «Новинка» у правому верхньому куті картки */
+.badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 1;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  color: var(--color-on-brand);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
