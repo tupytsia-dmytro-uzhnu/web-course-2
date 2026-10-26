@@ -166,6 +166,8 @@
         </tbody>
       </table>
     </section>
+perl -0pi -e 'BEGIN{local $/; open F,"/tmp/cards.html"; $b=<F>; close F} s#(<!-- Details / Summary -->)#$b$1#' catalog.html
+grep -c "class=\"banner\"" catalog.html
 
     <!-- Details / Summary -->
     <section>
