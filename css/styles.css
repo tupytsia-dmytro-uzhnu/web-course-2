@@ -409,3 +409,15 @@ button[type="reset"], input[type="reset"] {
   z-index: 100;
   box-shadow: var(--shadow, 0 2px 8px rgb(0 0 0 / 10%));
 }
+
+/* ---------- ЛР5: схлопування відступів ---------- */
+.box {
+  padding: 1rem;
+  background: var(--color-pill-bg);
+  border: 1px solid var(--color-border);
+}
+.box-a { margin-bottom: 2rem; }
+.box-b { margin-top: 1rem; }
+/* Звичайний потік: відстань між A і B = 2rem (більший із відступів).
+   Flex-контейнер: відступи не схлопуються, відстань = 2rem + 1rem = 3rem. */
+.stack-flex { display: flex; flex-direction: column; }
