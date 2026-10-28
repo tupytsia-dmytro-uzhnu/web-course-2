@@ -32,6 +32,11 @@
   --shadow: 0 2px 8px rgb(0 0 0 / 8%);
   --max-text: 65ch;
   --max-page: 62rem;
+  --gap: 1.25rem;
+  --min-col: 220px;
+  --sidebar: 200px;
+  --space-sm: 0.5rem;
+  --space-lg: 1.5rem;
   --card-width: 16rem;
   --color-banner-from: hsl(215 90% 42%);
   --color-banner-to: hsl(220 14% 20%);
@@ -93,11 +98,11 @@ a:active { color: var(--color-muted); }
 /* ---------- Горизонтальне меню: список <ul> лишається списком ---------- */
 nav { background: var(--color-brand); }
 nav ul { list-style: none; margin: 0; padding-left: 0; }
-nav li { display: inline-block; }
+nav li { display: inline-flex; }
 
 /* letter-spacing задано тільки тут — де текст у верхньому регістрі */
 nav a {
-  display: inline-block;
+  display: inline-flex;
   padding: 0.75rem 1.25rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -133,7 +138,7 @@ a[href^="http"]::after { content: " \2197"; font-size: 0.85em; }
 /* [Псевдоелемент ::before] Декоративна синя смужка перед заголовками h2. */
 main h2::before {
   content: "";
-  display: inline-block;
+  display: inline-flex;
   width: 0.35rem;
   height: 1em;
   margin-right: 0.6rem;
@@ -157,7 +162,7 @@ summary { cursor: pointer; font-weight: 700; color: var(--color-brand); }
 
 /* ---------- «Пігулки» функцій (5G, NFC, IP68) ---------- */
 .pill {
-  display: inline-block;
+  display: inline-flex;
   padding: 0.15rem 0.7rem;
   border: 1px solid var(--color-accent);
   border-radius: var(--radius-pill);
@@ -216,7 +221,7 @@ form fieldset {
 }
 legend { font-weight: 700; color: var(--color-brand); padding: 0 0.5rem; }
 
-label { display: inline-block; margin: 0.75rem 0 0.25rem; }
+label { display: inline-flex; margin: 0.75rem 0 0.25rem; }
 
 /* Поля однакової ширини (крім радіо, чекбоксів і кнопок) */
 form input:not([type="radio"], [type="checkbox"], [type="submit"], [type="reset"]),
@@ -345,9 +350,9 @@ button[type="reset"], input[type="reset"] {
 
 /* ---------- ЛР5: картки смартфонів ---------- */
 .cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--min-col), 1fr));
+  gap: var(--gap);
   margin: var(--space) 0 calc(var(--space) * 2);
 }
 
@@ -356,7 +361,6 @@ button[type="reset"], input[type="reset"] {
 .card {
   position: relative;
   overflow: hidden;
-  width: var(--card-width);
   background: var(--color-bg);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
