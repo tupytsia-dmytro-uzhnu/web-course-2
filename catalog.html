@@ -21,7 +21,17 @@
     </nav>
   </header>
 
-  <main>
+  <div class="layout">
+<nav class="layout__nav" aria-label="Рубрики каталогу">
+  <h2>Рубрики</h2>
+  <ul>
+    <li><a href="#">Усі смартфони</a></li>
+    <li><a href="#">Флагмани</a></li>
+    <li><a href="#">Середній клас</a></li>
+    <li><a href="#">Новинки 2023+</a></li>
+  </ul>
+</nav>
+<main class="layout__main">
 <section>
   <div class="banner">
     <h2>Новинки 2023–2024</h2>
@@ -359,10 +369,21 @@ grep -c "class=\"banner\"" catalog.html
     </section>
 
   </main>
+<aside class="layout__aside">
+  <h2>Фільтр за брендом</h2>
+  <ul>
+    <li><label><input type="checkbox"> Apple</label></li>
+    <li><label><input type="checkbox"> Samsung</label></li>
+    <li><label><input type="checkbox"> Xiaomi</label></li>
+    <li><label><input type="checkbox"> Google</label></li>
+  </ul>
+</aside>
 
-  <footer>
+  <footer class="layout__footer">
     <p>Група 1 2 курс, Тупиця Дмитро, 2026</p>
-  </footer>
+    <p>Контакти: info@mobi-gid.example</p>
+</footer>
+</div>
 
 </body>
 </html>

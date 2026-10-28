@@ -25,7 +25,17 @@
     </header>
 
     <!-- Основний вміст -->
-    <main>
+    <div class="layout">
+<nav class="layout__nav" aria-label="Розділи сторінки">
+  <h2>Розділи</h2>
+  <ul>
+    <li><a href="#about">Про проєкт</a></li>
+    <li><a href="#how-to-choose">Як обрати смартфон</a></li>
+    <li><a href="catalog.html">Каталог смартфонів</a></li>
+    <li><a href="form.html">Оформити замовлення</a></li>
+  </ul>
+</nav>
+<main class="layout__main">
         <section>
             <h2 id="about">Про проєкт</h2>
             <p><strong>Мобі-Гід</strong> — це довідник смартфонів, де можна порівняти екрани, процесори, камери й датчики
@@ -193,20 +203,19 @@
             </details>
         </section>
     </main>
-
-    <aside>
-        <h2>Корисні поради</h2>
-        <ul>
-            <li>Порада 1</li>
-            <li>Порада 2</li>
-        </ul>
-    </aside>
-
-    <hr>
-    <!-- Підвал -->
-    <footer>
+<aside class="layout__aside">
+  <h2>Корисні поради</h2>
+  <ul>
+    <li>Дивіться на ємність акумулятора: від 4000 мАг вистачає на день.</li>
+    <li>Для вологих умов обирайте захист IP68.</li>
+    <li>Камери порівнюйте за реальними знімками, а не за мегапікселями.</li>
+  </ul>
+</aside>
+<footer class="layout__footer">
         <p>Група 1, 2 курс, Тупиця Дмитро Михайлович, 2026</p>
-    </footer>
+      <p>Контакти: info@mobi-gid.example</p>
+</footer>
+</div>
 
 </body>
 

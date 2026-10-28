@@ -479,3 +479,51 @@ button[type="reset"], input[type="reset"] {
 .site-header nav a:focus-visible { outline-color: var(--color-on-brand); }
 /* Поточна сторінка: стоїть після :hover, щоб виграти за порядком */
 .site-header nav a.current { background: var(--color-bg); color: var(--color-brand); }
+
+/* ---------- LR6: макет сторінки через grid-template-areas ---------- */
+.layout {
+  display: grid;
+  grid-template-columns: var(--sidebar) 1fr var(--sidebar);
+  grid-template-areas:
+    "nav  main side"
+    "foot foot foot";
+  gap: var(--gap);
+  width: min(100%, 1500px);
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space);
+}
+.layout__nav    { grid-area: nav; }
+.layout__main   { grid-area: main; }
+.layout__aside  { grid-area: side; }
+.layout__footer { grid-area: foot; }
+
+/* Дозволяє колонці 1fr стискатися, коли всередині широкий вміст (таблиця) */
+.layout > * { min-width: 0; }
+
+/* Глобальні відступи main із LR4–LR5 у макеті не потрібні: ними керує сітка */
+.layout__main { max-width: none; margin: 0; padding: 0; }
+
+.layout__nav,
+.layout__aside {
+  align-self: start;
+  padding: var(--space);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+.layout__nav h2,
+.layout__aside h2 { margin-top: 0; font-size: 1.1rem; }
+.layout__nav ul,
+.layout__aside ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.layout__aside label {
+  align-items: center;
+  gap: var(--space-sm);
+  margin: 0;
+}
