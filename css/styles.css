@@ -527,3 +527,15 @@ button[type="reset"], input[type="reset"] {
   gap: var(--space-sm);
   margin: 0;
 }
+
+/* ---------- LR6: притиснутий футер ---------- */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+/* Росте сам макет (flex: 1), а не висота через height: 100%: у flex-колонці
+   flex: 1 віддає макету весь вільний простір між шапкою й низом вікна, тоді
+   як height: 100% не знає висоти батька з min-height і нічого не розтягує. */
+.layout { flex: 1; grid-template-rows: 1fr auto; }   /* "nav main side" росте, "foot" по вмісту */
+main { flex: 1; width: 100%; }                        /* на form.html, де .layout немає */
