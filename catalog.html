@@ -52,6 +52,7 @@
       </div>
       <div class="card__actions">
         <a class="card__action" href="#">Детальніше</a>
+        <button type="button" id="openDetails">Швидкий перегляд</button>
       </div>
     </article>
     <article class="card">
@@ -384,6 +385,19 @@ grep -c "class=\"banner\"" catalog.html
     <p>Контакти: info@mobi-gid.example</p>
 </footer>
 </div>
+
+<dialog id="details">
+  <h2>Samsung Galaxy S24</h2>
+  <p>Ідентифікатор: SKU-PH-11450</p>
+  <p>Розгорнутий опис: екран 6.2" AMOLED, основна камера 50 Мп (надширококутна 12 Мп, телефото 10 Мп), акумулятор 4000 мАг, підтримка 5G, NFC і захисту IP68.</p>
+  <button type="button" id="closeDetails">Закрити</button>
+</dialog>
+
+<script>
+  const dlg = document.getElementById("details");
+  document.getElementById("openDetails").addEventListener("click", () => dlg.showModal());
+  document.getElementById("closeDetails").addEventListener("click", () => dlg.close());
+</script>
 
 </body>
 </html>

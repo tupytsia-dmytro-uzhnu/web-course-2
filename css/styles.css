@@ -539,3 +539,29 @@ body {
    як height: 100% не знає висоти батька з min-height і нічого не розтягує. */
 .layout { flex: 1; grid-template-rows: 1fr auto; }   /* "nav main side" росте, "foot" по вмісту */
 main { flex: 1; width: 100%; }                        /* на form.html, де .layout немає */
+
+/* ---------- LR6: модальне вікно <dialog> ---------- */
+/* z-index тут не потрібен: showModal() виводить вікно у «верхній шар» браузера
+   (top layer), який малюється над усім документом, а липка шапка з LR5 була
+   звичайним елементом сторінки й мусила обганяти картки за порядком накладання. */
+dialog {
+  width: min(90%, 420px);
+  padding: var(--space-lg);
+  border: none;
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: 0 12px 28px rgb(0 0 0 / 35%);
+}
+dialog::backdrop { background: rgb(0 0 0 / 55%); }
+dialog h2 { margin-top: 0; }
+dialog button {
+  padding: var(--space-sm) var(--space);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius);
+  background: var(--color-accent);
+  color: var(--color-on-brand);
+  font-weight: 700;
+}
+/* Поки вікно відкрите, сторінка позаду не прокручується */
+body:has(dialog[open]) { overflow: hidden; }
