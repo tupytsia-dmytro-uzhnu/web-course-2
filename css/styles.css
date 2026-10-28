@@ -361,6 +361,8 @@ button[type="reset"], input[type="reset"] {
 .card {
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
   background: var(--color-bg);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
@@ -425,3 +427,36 @@ button[type="reset"], input[type="reset"] {
 /* Звичайний потік: відстань між A і B = 2rem (більший із відступів).
    Flex-контейнер: відступи не схлопуються, відстань = 2rem + 1rem = 3rem. */
 .stack-flex { display: flex; flex-direction: column; }
+
+/* ---------- LR6: нутрощі картки на Flexbox ---------- */
+/* margin-top: auto віддає блоку весь вільний простір над ним: так само, як
+   margin: 0 auto віддає весь вільний простір бічним відступам і центрує блок,
+   тут увесь залишок висоти картки опиняється зверху, а рядок дій — унизу. */
+.card__actions {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: auto;
+  padding: 0 var(--space) var(--space);
+}
+.card__action,
+.card__actions button {
+  flex: 1;
+  margin: 0;
+  padding: var(--space-sm) var(--space);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius);
+  font-weight: 700;
+  text-align: center;
+}
+.card__action:link,
+.card__action:visited {
+  background: var(--color-accent);
+  color: var(--color-on-brand);
+  text-decoration: none;
+}
+.card__action:hover { background: var(--color-brand); color: var(--color-on-brand); }
+.card__actions button {
+  background: var(--color-bg);
+  color: var(--color-brand);
+  border-color: var(--color-muted);
+}
