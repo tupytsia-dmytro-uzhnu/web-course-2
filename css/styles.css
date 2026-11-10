@@ -357,6 +357,14 @@ button[type="reset"], input[type="reset"] {
   margin: var(--space) 0 calc(var(--space) * 2);
 }
 
+/* Число колонок каталогу міняємо значенням --min-col, а не repeat(N, 1fr) */
+@media (min-width: 768px) {
+  .cards { --min-col: 220px; }
+}
+@media (min-width: 1024px) {
+  .cards { --min-col: 200px; }
+}
+
 /* position: relative — бейдж відраховується від кутів картки;
    overflow: hidden — фото обрізається по заокруглених кутах. */
 .card {
@@ -499,15 +507,20 @@ button[type="reset"], input[type="reset"] {
 /* Поточна сторінка: стоїть після :hover, щоб виграти за порядком */
 .site-header nav a.current { background: var(--color-bg); color: var(--color-brand); }
 
-/* ---------- LR6: макет сторінки через grid-template-areas ---------- */
+/* ---------- Макет сторінки: mobile-first ---------- */
+/* База — телефон: одна колонка, порядок зон nav → main → side → foot.
+   <header> лишається за межами .layout, щоб шапка могла бути липкою. */
 .layout {
   display: grid;
-  grid-template-columns: var(--sidebar) 1fr var(--sidebar);
+  grid-template-columns: 1fr;
   grid-template-areas:
-    "nav  main side"
-    "foot foot foot";
+    "nav"
+    "main"
+    "side"
+    "foot";
+  grid-template-rows: auto 1fr auto auto;   /* росте main, тому футер унизу */
   gap: var(--gap);
-  width: min(100%, 1500px);
+  width: min(100%, 1200px);
   margin: 0 auto;
   padding: var(--space-lg) var(--space);
 }
@@ -516,10 +529,10 @@ button[type="reset"], input[type="reset"] {
 .layout__aside  { grid-area: side; }
 .layout__footer { grid-area: foot; }
 
-/* Дозволяє колонці 1fr стискатися, коли всередині широкий вміст (таблиця) */
+/* Дозволяє колонці 1fr стискатися, коли всередині широкий вміст */
 .layout > * { min-width: 0; }
 
-/* Глобальні відступи main із LR4–LR5 у макеті не потрібні: ними керує сітка */
+/* Глобальні відступи main у макеті не потрібні: ними керує сітка */
 .layout__main { max-width: none; margin: 0; padding: 0; }
 
 .layout__nav,
@@ -547,6 +560,31 @@ button[type="reset"], input[type="reset"] {
   margin: 0;
 }
 
+/* Планшет: дві колонки, рубрики горизонтальним рядом над ними */
+@media (min-width: 768px) {
+  .layout {
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas:
+      "nav  nav"
+      "main side"
+      "foot foot";
+    grid-template-rows: auto 1fr auto;
+  }
+  .layout__nav ul { flex-direction: row; flex-wrap: wrap; }
+}
+
+/* Десктоп: рівно та схема, що була в ЛР6 */
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: var(--sidebar) 1fr var(--sidebar);
+    grid-template-areas:
+      "nav  main side"
+      "foot foot foot";
+    grid-template-rows: 1fr auto;
+  }
+  .layout__nav ul { flex-direction: column; }
+}
+
 /* ---------- LR6: притиснутий футер ---------- */
 body {
   display: flex;
@@ -556,7 +594,7 @@ body {
 /* Росте сам макет (flex: 1), а не висота через height: 100%: у flex-колонці
    flex: 1 віддає макету весь вільний простір між шапкою й низом вікна, тоді
    як height: 100% не знає висоти батька з min-height і нічого не розтягує. */
-.layout { flex: 1; grid-template-rows: 1fr auto; }   /* "nav main side" росте, "foot" по вмісту */
+.layout { flex: 1; }   /* рядки сітки задано в блоці макета, по брейкпоінтах */
 main { flex: 1; width: 100%; }                        /* на form.html, де .layout немає */
 
 /* ---------- LR6: модальне вікно <dialog> ---------- */
