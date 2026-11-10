@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Замовлення смартфона — Мобі-Гід</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <header class="site-header" id="promo">
+        <h2>Мобі-Гід</h2>
+        <nav>
+            <a href="index.html">Головна</a> |
+            <a href="catalog.html">Смартфони</a> |
+            <a class="current" href="form.html">Замовлення</a>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Замовлення смартфона</h1>
+        <p>Оберіть модель, вкажіть складський код, обсяг пам'яті та потрібні функції.
+            Після відправлення менеджер зв'яжеться з вами для підтвердження замовлення.</p>
+
+        <form action="/submit" method="post">
+            <!-- method="post": форма створює замовлення, тому повторне надсилання
+           по F5 не має відбуватися випадково, і дані не повинні лишатися в URL -->
+
+            <fieldset>
+                <legend>Дані користувача</legend>
+
+                <p>
+                    <label for="fullname">Прізвище та ім'я:</label><br>
+                    <input type="text" id="fullname" name="fullname" placeholder="Тупиця Дмитро" required minlength="2"
+                        maxlength="60" autocomplete="name">
+                </p>
+
+                <p>
+                    <label for="email">Електронна пошта:</label><br>
+                    <input type="email" id="email" name="email" placeholder="dmytro@example.com" required
+                        autocomplete="email">
+                </p>
+
+                <p>
+                    <label for="phone">Телефон:</label><br>
+                    <!-- pattern="\+380[0-9]{9}"
+               \+ — буквальний плюс (екранований, бо + у регулярці означає «один або більше»)
+               380 — код України, три цифри підряд
+               [0-9]{9} — рівно дев'ять цифр
+               Разом: +380671234567 -->
+                    <input type="tel" id="phone" name="phone" placeholder="+380671234567" required
+                        pattern="\+380[0-9]{9}" title="Формат: +380 і ще 9 цифр, наприклад +380671234567"
+                        autocomplete="tel">
+                </p>
+
+                <p>
+                    <label for="delivery_date">Бажана дата доставки:</label><br>
+                    <input type="date" id="delivery_date" name="delivery_date" required min="2026-09-01"
+                        max="2027-06-30">
+                </p>
+            </fieldset>
+
+            <fieldset>
+                <legend>Дані замовлення</legend>
+
+                <p>
+                    <label for="model">Модель:</label><br>
+                    <select id="model" name="model" required>
+                        <option value="">— оберіть —</option>
+                        <option value="iphone15">iPhone 15</option>
+                        <option value="iphone14">iPhone 14</option>
+                        <option value="galaxy_s24">Galaxy S24</option>
+                        <option value="galaxy_a55">Galaxy A55</option>
+                    </select>
+                </p>
+
+                <p>
+                    <label for="sku">Складський код:</label><br>
+                    <!-- pattern="SKU-[A-Z]{2}-[0-9]{5}"
+               SKU- — буквальний префікс і дефіс
+               [A-Z]{2} — рівно дві великі латинські літери (група товару)
+               - — буквальний дефіс
+               [0-9]{5} — рівно п'ять цифр
+               Разом: SKU-PH-11450 -->
+                    <input type="text" id="sku" name="sku" placeholder="SKU-PH-11450" required
+                        pattern="SKU-[A-Z]{2}-[0-9]{5}"
+                        title="Формат: SKU-, дві великі латинські літери, дефіс і п'ять цифр, наприклад SKU-PH-11450">
+                </p>
+
+                <p>
+                    <label for="quantity">Кількість (від 1 до 5):</label><br>
+                    <input type="number" id="quantity" name="quantity" placeholder="2" min="1" max="5" step="1"
+                        required>
+                </p>
+
+                <p>Обсяг пам'яті:</p>
+                <p>
+                    <input type="radio" id="storage128" name="storage" value="128" checked>
+                    <label for="storage128">128 ГБ</label>
+                    <input type="radio" id="storage256" name="storage" value="256">
+                    <label for="storage256">256 ГБ</label>
+                    <input type="radio" id="storage512" name="storage" value="512">
+                    <label for="storage512">512 ГБ</label>
+                </p>
+
+                <p>Потрібні функції:</p>
+                <p>
+                    <input type="checkbox" id="feat5g" name="features" value="5g">
+                    <label for="feat5g">5G</label>
+                    <input type="checkbox" id="featnfc" name="features" value="nfc">
+                    <label for="featnfc">NFC</label>
+                    <input type="checkbox" id="featwireless" name="features" value="wireless_charging">
+                    <label for="featwireless">Бездротова зарядка</label>
+                </p>
+
+                <p>
+                    <label for="shipping">Спосіб доставки:</label><br>
+                    <select id="shipping" name="shipping" required>
+                        <option value="">— оберіть —</option>
+                        <option value="nova_poshta">Нова пошта</option>
+                        <option value="ukrposhta">Укрпошта</option>
+                        <option value="pickup">Самовивіз</option>
+                        <option value="courier">Кур'єр</option>
+                    </select>
+                </p>
+            </fieldset>
+
+            <fieldset>
+                <legend>Додатково</legend>
+
+                <p>
+                    <label for="comment">Коментар до замовлення:</label><br>
+                    <textarea id="comment" name="comment" rows="4" cols="40"
+                        placeholder="Наприклад: зателефонуйте після 18:00" minlength="10" maxlength="500"></textarea>
+                </p>
+
+                <p>
+                    <input type="checkbox" id="agree" name="agree" value="yes" required>
+                    <label for="agree">Погоджуюсь з умовами гарантії та обробкою даних</label>
+                </p>
+            </fieldset>
+
+            <p>
+                <button type="submit">Замовити смартфон</button>
+                <button type="reset">Очистити форму</button>
+            </p>
+        </form>
+    </main>
+
+    <footer>
+        <p>© 2026 Мобі-Гід. Тупиця Дмитро, ІКС-2</p>
+    </footer>
+</body>
+
+</html>
