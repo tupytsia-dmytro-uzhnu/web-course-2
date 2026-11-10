@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Каталог смартфонів — Мобі-Гід</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -269,7 +269,8 @@
     <!-- Таблиця даних -->
     <section>
       <h2>Таблиця смартфонів</h2>
-      <table>
+      <div class="table-wrap">
+<table>
         <caption>Характеристики смартфонів каталогу «Мобі-Гід»</caption>
         <thead>
           <tr>
@@ -326,6 +327,7 @@
           </tr>
         </tbody>
       </table>
+</div>
     </section>
 perl -0pi -e 'BEGIN{local $/; open F,"/tmp/cards.html"; $b=<F>; close F} s#(<!-- Details / Summary -->)#$b$1#' catalog.html
 grep -c "class=\"banner\"" catalog.html
