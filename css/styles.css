@@ -622,3 +622,65 @@ dialog button {
 }
 /* Поки вікно відкрите, сторінка позаду не прокручується */
 body:has(dialog[open]) { overflow: hidden; }
+
+/* ---------- LR7: анімація появи модалки ---------- */
+@keyframes fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes pop {
+  from { opacity: 0; transform: translateY(24px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+/* both = backwards + forwards: до старту блок стоїть у першому кадрі, а після
+   завершення лишається в останньому. Без нього за наявності затримки блок на мить
+   показався б у звичайному вигляді, а після кінця стрибком повернувся б до стилів
+   поза анімацією. Тло з'являється швидше (200ms), саме вікно «доганяє» (280ms). */
+dialog[open] { animation: pop 280ms ease-out both; }
+dialog[open]::backdrop { animation: fade 200ms ease-out both; }
+
+/* ---------- LR7: індикатор завантаження (заготовка для LR10) ---------- */
+.loader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin: var(--space) 0;
+}
+.loader p { margin: 0; }
+/* display: flex перебиває UA-правило [hidden], тому приховування повертаємо явно */
+.loader[hidden] { display: none; }
+
+.spinner {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border: 6px solid var(--color-surface);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  /* linear дає сталу швидкість обертання; з ease коло розганялося б і гальмувало
+     в кожному обороті, тож спінер виглядав би таким, що смикається й підвисає. */
+  animation: spin 900ms linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- LR7: повага до prefers-reduced-motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+/* Тонше правило: замість руху лишаємо безпечний відгук — зміну кольору */
+@media (prefers-reduced-motion: reduce) {
+  .card:hover,
+  .card:focus-within {
+    transform: none;
+    background: var(--color-surface);
+  }
+  .card:hover .card__img,
+  .card:focus-within .card__img { transform: none; }
+}
