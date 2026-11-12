@@ -70,3 +70,37 @@ const phones = [
   }
 ];
 
+// ===== Допоміжні функції =====
+
+// Приймає id елемента та значення (рядок або масив рядків), записує текст у елемент.
+// Нічого не повертає. Єдина функція, що торкається сторінки.
+const show = (id, value) => {
+  const box = document.getElementById(id);
+  if (box === null) {
+    console.error("Немає елемента з id:", id);
+    return;
+  }
+  box.textContent = Array.isArray(value) ? value.join("\n") : value;
+};
+
+// Приймає масив записів, повертає рядок: список моделей або текст «нічого не знайдено».
+const listOrEmpty = (items) =>
+  items.length === 0
+    ? "  нічого не знайдено"
+    : items.map((p) => `  • ${p.model}`).join("\n");
+
+// ===== Функції обробки =====
+
+// Приймає масив смартфонів, повертає масив рядків виду «1. Модель — Бренд, рік (камера, акумулятор)».
+function numberedList(items) {
+  const lines = [];
+  for (let i = 0; i < items.length; i++) {
+    const p = items[i];
+    lines.push(`${i + 1}. ${p.model} — ${p.brand}, ${p.year} (основна камера ${p.camera.mainMp} Мп, акумулятор ${p.battery} мАг)`);
+  }
+  return lines;
+}
+
+// ===== Вивід на сторінку (блок викликів show) =====
+show("out-count", `Моделей у каталозі: ${phones.length}`);
+show("out-numbered", numberedList(phones));
