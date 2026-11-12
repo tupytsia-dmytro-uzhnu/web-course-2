@@ -140,6 +140,21 @@ const sortByBattery = (items) => [...items].sort((a, b) => a.battery - b.battery
 // Приймає масив, повертає НОВИЙ масив за назвою моделі в українській абетці.
 const sortByModel = (items) => [...items].sort((a, b) => a.model.localeCompare(b.model, "uk"));
 
+// Приймає масив смартфонів, повертає ОБ'ЄКТ статистики за акумулятором: count, total, average, max, categories.
+const statsForPhones = (items) => {
+  // Початкове значення 0 — стартова сума. Без нього reduce взяв би за накопичувач перший ОБ'ЄКТ
+  // і додавав би до нього числа, тож замість суми вийшов би рядок «[object Object]5000…».
+  const total = items.reduce((sum, p) => sum + p.battery, 0);
+  const max = items.reduce((best, p) => (p.battery > best.battery ? p : best), items[0]);
+  return {
+    count: items.length,
+    total,
+    average: (total / items.length).toFixed(1),
+    max,
+    categories: new Set(items.map((p) => p.segment)).size
+  };
+};
+
 // ===== Вивід на сторінку (блок викликів show) =====
 show("out-count", `Моделей у каталозі: ${phones.length}`);
 show("out-numbered", numberedList(phones));
@@ -169,4 +184,14 @@ show("out-sorted", [
   byModel.map((p) => `  ${p.model}`).join("\n"),
   "Вихідний порядок (масив не змінено):",
   phones.map((p) => `  ${p.model}`).join("\n")
+]);
+const stats = statsForPhones(phones);
+const sensors = uniqueSensors(phones);
+show("out-stats", [
+  `Усього моделей: ${stats.count}`,
+  `Сума ємностей акумуляторів: ${stats.total} мАг`,
+  `Середня ємність: ${stats.average} мАг`,
+  `Найбільший акумулятор: ${stats.max.model} (${stats.max.battery} мАг)`,
+  `Різних сегментів: ${stats.categories}`,
+  `Унікальні датчики (${sensors.length}): ${sensors.join(", ")}`
 ]);
