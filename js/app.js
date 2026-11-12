@@ -101,6 +101,72 @@ function numberedList(items) {
   return lines;
 }
 
+// Приймає смартфон, повертає назву узагальненої групи за його сегментом (тільки switch).
+function categoryOf(phone) {
+  switch (phone.segment) {
+    case "флагман":
+    case "преміум":
+      return "Топовий сегмент";
+    case "середній клас":
+      return "Середній сегмент";
+    case "бюджетний":
+      return "Доступний сегмент";
+    default:
+      return "Інші сегменти";
+  }
+}
+
+// Приймає масив і сегмент, повертає масив записів, у яких segment строго дорівнює value.
+const filterBySegment = (items, value) => items.filter((p) => p.segment === value);
+
+// Приймає масив і мінімальний рік, повертає масив моделей цього року й новіших.
+const filterByYearFrom = (items, minYear) => items.filter((p) => p.year >= minYear);
+
+// Приймає масив і назву функції, повертає масив моделей, які її підтримують.
+const filterByFeature = (items, feature) => items.filter((p) => p.features.includes(feature));
+
+// Приймає масив, повертає масив моделей із найбільшою основною камерою (reduce шукає максимум, filter збирає всі рівні).
+const modelsWithBiggestCamera = (items) => {
+  const biggest = items.reduce((max, p) => (p.camera.mainMp > max ? p.camera.mainMp : max), 0);
+  return items.filter((p) => p.camera.mainMp === biggest);
+};
+
+// Приймає масив, повертає масив усіх унікальних датчиків (flatMap розгортає масиви, Set прибирає повтори).
+const uniqueSensors = (items) => [...new Set(items.flatMap((p) => p.sensors))];
+
+// Приймає масив, повертає НОВИЙ масив за зростанням акумулятора; оригінал не змінюється.
+const sortByBattery = (items) => [...items].sort((a, b) => a.battery - b.battery);
+
+// Приймає масив, повертає НОВИЙ масив за назвою моделі в українській абетці.
+const sortByModel = (items) => [...items].sort((a, b) => a.model.localeCompare(b.model, "uk"));
+
 // ===== Вивід на сторінку (блок викликів show) =====
 show("out-count", `Моделей у каталозі: ${phones.length}`);
 show("out-numbered", numberedList(phones));
+show("out-categories", phones.map((p) => `${p.model} → ${categoryOf(p)}`));
+const flagships = filterBySegment(phones, "флагман");
+const fromYear = filterByYearFrom(phones, 2023);
+const withWireless = filterByFeature(phones, "бездротова зарядка");
+const withUwb = filterByFeature(phones, "UWB");
+const biggestCamera = modelsWithBiggestCamera(phones);
+show("out-filter", [
+  `Сегмент «флагман»: знайдено ${flagships.length}`,
+  listOrEmpty(flagships),
+  `Від 2023 року: знайдено ${fromYear.length}`,
+  listOrEmpty(fromYear),
+  `З бездротовою зарядкою: знайдено ${withWireless.length}`,
+  listOrEmpty(withWireless),
+  `З функцією UWB: знайдено ${withUwb.length}`,
+  listOrEmpty(withUwb),
+  `Найбільша основна камера (${biggestCamera[0].camera.mainMp} Мп): ${biggestCamera.map((p) => p.model).join(", ")}`
+]);
+const byBattery = sortByBattery(phones);
+const byModel = sortByModel(phones);
+show("out-sorted", [
+  "За акумулятором (від меншого до більшого):",
+  byBattery.map((p) => `  ${p.model} — ${p.battery} мАг`).join("\n"),
+  "За назвою (українська абетка):",
+  byModel.map((p) => `  ${p.model}`).join("\n"),
+  "Вихідний порядок (масив не змінено):",
+  phones.map((p) => `  ${p.model}`).join("\n")
+]);
