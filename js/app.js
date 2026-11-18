@@ -258,6 +258,40 @@ function initCatalog() {
   renderCards(phones);
 }
 
+// ===== LR9: пошук і фільтри =====
+
+// Читає пошук, сегмент, NFC і бренди з бічної панелі, будує відфільтрований масив (з функціями LR8),
+// перемальовує картки й керує блоком «Нічого не знайдено».
+function applyFilters() {
+  const query = document.getElementById("q").value.trim().toLowerCase();
+  const segment = document.getElementById("filter").value;
+  const onlyNfc = document.getElementById("nfc").checked;
+  const brands = [...document.querySelectorAll(".layout__aside input:checked")].map((box) => box.value);
+
+  let result = segment === "all" ? phones : filterBySegment(phones, segment);
+  if (onlyNfc) result = filterByFeature(result, "NFC");
+  result = result.filter(
+    (p) =>
+      (query === "" || p.model.toLowerCase().includes(query) || p.brand.toLowerCase().includes(query)) &&
+      (brands.length === 0 || brands.includes(p.brand))
+  );
+
+  renderCards(result);
+  document.getElementById("empty").hidden = result.length > 0;
+}
+
+// Підписує поле пошуку, список сегментів, прапорець NFC і бічну панель брендів на події.
+function initSearch() {
+  const search = document.getElementById("q");
+  if (search === null) return;
+  // input спрацьовує на кожну зміну тексту під час набирання, а change лише коли поле втрачає фокус,
+  // тому живий пошук без кнопки «шукати» потребує саме input.
+  search.addEventListener("input", applyFilters);
+  document.getElementById("filter").addEventListener("change", applyFilters);
+  document.getElementById("nfc").addEventListener("change", applyFilters);
+  document.querySelector(".layout__aside").addEventListener("change", applyFilters);
+}
+
 // ===== Вивід на сторінку (блок викликів show) =====
 if (document.getElementById("demo") !== null) {
 show("out-count", `Моделей у каталозі: ${phones.length}`);
@@ -304,3 +338,5 @@ show("out-stats", [
 // ===== LR9: запуск =====
 console.log(phones.length);
 initCatalog();
+
+initSearch();

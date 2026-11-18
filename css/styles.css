@@ -702,3 +702,28 @@ dialog[open]::backdrop { animation: fade 200ms ease-out both; }
 
 /* ---------- LR9: модифікатор бейджа (стан «старша модель») ---------- */
 .badge--old { background: var(--color-muted); }
+
+/* ---------- LR9: панель пошуку й фільтрів ---------- */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space);
+}
+.controls label { margin: 0; }
+.controls input[type="search"],
+.controls select {
+  padding: var(--space-sm) var(--space);
+  border: 1px solid var(--color-muted);
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: inherit;
+}
+.empty {
+  padding: var(--space);
+  background: var(--color-surface);
+  border-radius: var(--radius);
+}
+.empty[hidden] { display: none; }
