@@ -571,7 +571,6 @@ show("out-stats", [
 }
 
 // ===== LR9: запуск =====
-console.log(phones.length);
 initCatalog();
 
 initSearch();
