@@ -470,8 +470,9 @@ button[type="reset"], input[type="reset"] {
   border-color: var(--color-muted);
 }
 
-/* ---------- LR6: шапка й меню на Flexbox ---------- */
-/* Назва сайту ліворуч, меню праворуч: їх розсуває justify-content: space-between */
+/* ---------- Шапка й меню: mobile-first ---------- */
+/* База — телефон: назва сайту, кнопка теми й кнопка-бургер; саме меню приховане, доки
+   JavaScript (функція setMenu) не додасть йому клас .open. На телефоні шапка не липка. */
 .site-header {
   display: flex;
   flex-wrap: wrap;
@@ -479,22 +480,53 @@ button[type="reset"], input[type="reset"] {
   justify-content: space-between;
   gap: var(--gap);
 }
-.site-header nav {
+.theme-toggle,
+.burger {
+  min-height: 2.75rem;
+  padding: 0 var(--space);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  cursor: pointer;
+}
+.theme-toggle { margin-left: auto; }
+.burger {
   margin-right: var(--space);
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-on-brand);
+  font-size: 1.25rem;
+}
+.theme-toggle:hover { background: var(--color-pill-bg); }
+.burger:hover { border-color: var(--color-brand); background: var(--color-brand); }
+.theme-toggle:focus-visible,
+.burger:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 2px; }
+
+.site-header nav {
+  flex: 1 1 100%;
+  margin: 0 var(--space) var(--space);
   background: var(--color-brand);
   border-radius: var(--radius);
 }
-.site-header nav ul {
+.menu { display: none; }
+.menu.open { display: flex; }
+.site-header .nav__list {
   display: flex;
+  flex: 1;
+  flex-direction: column;
   gap: var(--space-sm);
   margin: 0;
   padding: var(--space-sm);
   list-style: none;
 }
-/* letter-spacing задано тільки тут — де текст у верхньому регістрі */
+/* Пункти на всю ширину, заввишки не менше 44px (2.75rem): мінімум для пальця */
 .site-header nav a {
-  display: block;
-  padding: var(--space-sm) var(--space);
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 var(--space);
   border-radius: var(--radius);
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -506,6 +538,20 @@ button[type="reset"], input[type="reset"] {
 .site-header nav a:focus-visible { outline-color: var(--color-on-brand); }
 /* Поточна сторінка: стоїть після :hover, щоб виграти за порядком */
 .site-header nav a.current { background: var(--color-bg); color: var(--color-brand); }
+
+/* Планшет і далі: бургер зникає, меню видно завжди горизонтальним рядом, шапка липка */
+@media (min-width: 768px) {
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow, 0 2px 8px rgb(0 0 0 / 10%));
+  }
+  .burger { display: none; }
+  .site-header nav { flex: 0 1 auto; margin: 0 var(--space) 0 0; }
+  .menu { display: flex; }
+  .site-header .nav__list { flex: 0 1 auto; flex-direction: row; flex-wrap: wrap; }
+}
 
 /* ---------- Макет сторінки: mobile-first ---------- */
 /* База — телефон: одна колонка, порядок зон nav → main → side → foot.
@@ -769,3 +815,66 @@ form input[type="checkbox"].invalid { outline: 2px solid var(--color-invalid); }
   animation: fade 200ms ease-out both;
 }
 .toast[hidden] { display: none; }
+
+/* ---------- LR9: темна тема ---------- */
+/* Перевизначаються лише значення змінних палітри. У темній темі brand стає світлим, а on-brand темним:
+   так заголовки лишаються читабельними, а меню, кнопки й бейджі зберігають контраст. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --color-brand: hsl(220 20% 88%);
+    --color-accent: hsl(215 90% 66%);
+    --color-bg: hsl(220 14% 10%);
+    --color-surface: hsl(220 14% 15%);
+    --color-text: hsl(220 14% 90%);
+    --color-muted: hsl(220 10% 70%);
+    --color-on-brand: hsl(220 14% 10%);
+    --color-border: hsl(220 12% 28%);
+    --color-pill-bg: hsl(215 40% 22%);
+    --color-valid: hsl(145 55% 60%);
+    --color-valid-bg: hsl(145 30% 17%);
+    --color-invalid: hsl(0 85% 72%);
+    --color-invalid-bg: hsl(0 40% 20%);
+    --color-banner-from: hsl(215 90% 66%);
+    --color-banner-to: hsl(215 70% 82%);
+  }
+}
+
+/* Класи-перебивачі на <html> мають вищу специфічність, ніж :root у медіазапиті, тому
+   виграють незалежно від системної схеми: користувач може вибрати будь-яку тему сам. */
+:root.dark-theme {
+  color-scheme: dark;
+  --color-brand: hsl(220 20% 88%);
+  --color-accent: hsl(215 90% 66%);
+  --color-bg: hsl(220 14% 10%);
+  --color-surface: hsl(220 14% 15%);
+  --color-text: hsl(220 14% 90%);
+  --color-muted: hsl(220 10% 70%);
+  --color-on-brand: hsl(220 14% 10%);
+  --color-border: hsl(220 12% 28%);
+  --color-pill-bg: hsl(215 40% 22%);
+  --color-valid: hsl(145 55% 60%);
+  --color-valid-bg: hsl(145 30% 17%);
+  --color-invalid: hsl(0 85% 72%);
+  --color-invalid-bg: hsl(0 40% 20%);
+  --color-banner-from: hsl(215 90% 66%);
+  --color-banner-to: hsl(215 70% 82%);
+}
+:root.light-theme {
+  color-scheme: light;
+  --color-brand: hsl(220 14% 20%);
+  --color-accent: hsl(215 90% 42%);
+  --color-bg: hsl(0 0% 100%);
+  --color-surface: hsl(215 20% 97%);
+  --color-text: hsl(220 14% 16%);
+  --color-muted: hsl(220 10% 38%);
+  --color-on-brand: hsl(0 0% 100%);
+  --color-border: hsl(215 14% 86%);
+  --color-pill-bg: hsl(215 80% 95%);
+  --color-valid: hsl(145 55% 32%);
+  --color-valid-bg: hsl(145 45% 95%);
+  --color-invalid: hsl(0 65% 42%);
+  --color-invalid-bg: hsl(0 80% 96%);
+  --color-banner-from: hsl(215 90% 42%);
+  --color-banner-to: hsl(220 14% 20%);
+}

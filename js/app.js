@@ -472,6 +472,61 @@ function initForm() {
   });
 }
 
+// ===== LR9: бургер-меню =====
+
+// Приймає true/false: відкриває чи закриває меню. Клас .open і aria-expanded міняються разом,
+// щоб видимий і програмний (для екранних читалок) стани не розходилися.
+const setMenu = (open) => {
+  document.getElementById("menu").classList.toggle("open", open);
+  document.getElementById("burger").setAttribute("aria-expanded", String(open));
+};
+
+// Підписує кнопку на клік, а документ на Escape і клік поза меню (на сторінці без меню нічого не робить).
+function initMenu() {
+  const menu = document.getElementById("menu");
+  const burger = document.getElementById("burger");
+  if (menu === null || burger === null) return;
+  burger.addEventListener("click", () => setMenu(!menu.classList.contains("open")));
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setMenu(false);
+  });
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest("#menu") && !event.target.closest("#burger")) setMenu(false);
+  });
+}
+
+// ===== LR9: тема =====
+
+// Повертає true, якщо зараз темна тема: спершу класи-перебивачі на <html>, і лише потім системна схема.
+function isDark() {
+  const root = document.documentElement;
+  if (root.classList.contains("dark-theme")) return true;
+  if (root.classList.contains("light-theme")) return false;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
+
+// Приймає true/false: вмикає темну чи світлу тему класами на <html>, оновлює aria-pressed і текст кнопки.
+const applyTheme = (dark) => {
+  const root = document.documentElement;
+  root.classList.toggle("dark-theme", dark);
+  root.classList.toggle("light-theme", !dark);
+  const button = document.getElementById("theme");
+  button.setAttribute("aria-pressed", String(dark));
+  button.textContent = dark ? "☀️ Світла тема" : "🌙 Темна тема";
+};
+
+// Узгоджує кнопку з поточною темою і перемикає її на клік (з повідомленням-тостом).
+function initTheme() {
+  const button = document.getElementById("theme");
+  if (button === null) return;
+  applyTheme(isDark());
+  button.addEventListener("click", () => {
+    const next = !isDark();
+    applyTheme(next);
+    showToast(next ? "Увімкнено темну тему" : "Увімкнено світлу тему");
+  });
+}
+
 // ===== Вивід на сторінку (блок викликів show) =====
 if (document.getElementById("demo") !== null) {
 show("out-count", `Моделей у каталозі: ${phones.length}`);
@@ -524,3 +579,6 @@ initSearch();
 initDialog();
 
 initForm();
+
+initMenu();
+initTheme();
