@@ -292,6 +292,40 @@ function initSearch() {
   document.querySelector(".layout__aside").addEventListener("change", applyFilters);
 }
 
+// ===== LR9: модальне вікно та делегування кліків =====
+
+// Приймає смартфон і записує його дані в поля модалки; текст кладеться тільки через textContent.
+const fillDialog = (item) => {
+  document.getElementById("d-title").textContent = `${item.brand} ${item.model}`;
+  document.getElementById("d-line1").textContent = `Рік: ${item.year}. Артикул: ${item.sku}`;
+  document.getElementById("d-line2").textContent =
+    `Камера: основна ${item.camera.mainMp} Мп, надширококутна ${item.camera.ultraWideMp} Мп, відео ${item.camera.video}. Акумулятор: ${item.battery} мАг`;
+  document.getElementById("d-line3").textContent =
+    `Функції: ${item.features.join(", ")}. Датчики: ${item.sensors.join(", ")}`;
+};
+
+// Вішає ОДИН обробник кліку на контейнер карток і відкриває модалку для картки, по якій клікнули.
+function initDialog() {
+  const cards = document.getElementById("cards");
+  const dlg = document.getElementById("details");
+  if (cards === null || dlg === null) return;
+
+  // Один слухач на контейнері працює й для карток, створених пізніше: клік «спливає» від кнопки вгору
+  // до #cards, а сам контейнер renderCards не перестворює, а лише міняє його вміст. Якби слухачі
+  // висіли на кнопках, то після кожного перемальовування списку нові кнопки лишалися б «глухими».
+  cards.addEventListener("click", (event) => {
+    const card = event.target.closest(".card");
+    if (!card) return;
+    event.preventDefault(); // посилання href="#" не має гортати сторінку нагору
+    const item = phones.find((p) => p.id === Number(card.dataset.id));
+    if (!item) return;
+    fillDialog(item);
+    dlg.showModal();
+  });
+
+  document.getElementById("d-close").addEventListener("click", () => dlg.close());
+}
+
 // ===== Вивід на сторінку (блок викликів show) =====
 if (document.getElementById("demo") !== null) {
 show("out-count", `Моделей у каталозі: ${phones.length}`);
@@ -340,3 +374,5 @@ console.log(phones.length);
 initCatalog();
 
 initSearch();
+
+initDialog();

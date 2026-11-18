@@ -301,17 +301,12 @@ grep -c "class=\"banner\"" catalog.html
 </div>
 
 <dialog id="details">
-  <h2>Samsung Galaxy S24</h2>
-  <p>Ідентифікатор: SKU-PH-11450</p>
-  <p>Розгорнутий опис: екран 6.2" AMOLED, основна камера 50 Мп (надширококутна 12 Мп, телефото 10 Мп), акумулятор 4000 мАг, підтримка 5G, NFC і захисту IP68.</p>
-  <button type="button" id="closeDetails">Закрити</button>
+  <h2 id="d-title"></h2>
+  <p id="d-line1"></p>
+  <p id="d-line2"></p>
+  <p id="d-line3"></p>
+  <button id="d-close" type="button">Закрити</button>
 </dialog>
-
-<script>
-  const dlg = document.getElementById("details");
-  document.getElementById("openDetails").addEventListener("click", () => dlg.showModal());
-  document.getElementById("closeDetails").addEventListener("click", () => dlg.close());
-</script>
 
 </body>
 </html>
