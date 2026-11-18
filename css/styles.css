@@ -1,0 +1,701 @@
+/* ==========================================================
+   Проєкт: «Мобі-Гід» — довідник смартфонів
+   Варіант: 10 (Каталог мобільних телефонів)
+   Автор: Тупиця Дмитро
+   Дата: 14.10.2026
+   ========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&subset=cyrillic&display=swap');
+
+/* Палітра «мінімалістична»: багато білого, графітовий текст, синій акцент.
+   Шрифт Inter (є кирилиця), накреслення 400 і 700 — разом два. */
+:root {
+  --color-brand: hsl(220 14% 20%);
+  --color-accent: hsl(215 90% 42%);
+  --color-bg: hsl(0 0% 100%);
+  --color-surface: hsl(215 20% 97%);
+  --color-text: hsl(220 14% 16%);
+  --color-muted: hsl(220 10% 38%);
+  --color-on-brand: hsl(0 0% 100%);
+  --color-border: hsl(215 14% 86%);
+  --color-pill-bg: hsl(215 80% 95%);
+  --color-valid: hsl(145 55% 32%);
+  --color-valid-bg: hsl(145 45% 95%);
+  --color-invalid: hsl(0 65% 42%);
+  --color-invalid-bg: hsl(0 80% 96%);
+
+  --font-body: "Inter", system-ui, "Segoe UI", Arial, sans-serif;
+  --font-heading: "Inter", system-ui, "Segoe UI", Arial, sans-serif;
+  --radius: 0.5rem;
+  --radius-pill: 999px;
+  --space: 1rem;
+  --shadow: 0 2px 8px rgb(0 0 0 / 8%);
+  --max-text: 65ch;
+  --max-page: 62rem;
+  --gap: 1.25rem;
+  --min-col: 240px;
+  --sidebar: 200px;
+  --space-sm: 0.5rem;
+  --space-lg: 1.5rem;
+  --card-width: 16rem;
+  --color-banner-from: hsl(215 90% 42%);
+  --color-banner-to: hsl(220 14% 20%);
+}
+
+/* ---------- Базові стилі та типографіка ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* max-width: 100% не дає зображенню бути ширшим за свій блок: без нього одна
+   надто широка картинка розтягує сторінку й з'являється горизонтальна прокрутка;
+   height: auto зберігає пропорції, коли ширина стискається. */
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--color-brand);
+}
+h1 { font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2rem); }
+h2 { font-size: clamp(1.25rem, 1rem + 1.1vw, 1.5rem); }
+h3 { font-size: clamp(1.1rem, 1rem + 0.6vw, 1.25rem); }
+
+p { max-width: var(--max-text); }
+img { max-width: 100%; height: auto; }
+
+/* ---------- Шапка, основний блок, футер ---------- */
+header { background: var(--color-surface); }
+header h1 { margin: 0; padding: 1.25rem 1.5rem; }
+
+main {
+  max-width: var(--max-page);
+  margin: 0 auto;
+  padding: calc(var(--space) * 2) 1.5rem;
+}
+
+footer {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  color: var(--color-muted);
+  padding: var(--space) 1.5rem;
+  font-size: 0.9rem;
+}
+
+/* ---------- Стани посилань у порядку LVHFA ---------- */
+/* Порядок LVHFA критичний: правила мають однакову специфічність, тому
+   перемагає пізніше; якщо поставити :hover перед :link, то :link, що
+   збігається з усіма посиланнями, перекриє :hover і ефект зникне. */
+a:link { color: var(--color-accent); }
+a:visited { color: var(--color-brand); }
+a:hover { color: var(--color-brand); text-decoration-thickness: 2px; }
+a:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 2px; }
+a:active { color: var(--color-muted); }
+
+
+/* ---------- Обов'язковий набір селекторів ---------- */
+/* [Псевдоклас :first-child + комбінатор «дитина» >]
+   Перший дочірній елемент <main> — без верхнього відступу. */
+main > :first-child { margin-top: 0; }
+
+/* [Псевдоклас :last-child]
+   Останній абзац футера — без нижнього відступу. */
+footer p:last-child { margin-bottom: 0; }
+
+/* [Псевдоклас :not() + :last-child + комбінатор «нащадок» (пробіл)]
+   Усі пункти списків усередині <main>, крім останнього, отримують відступ. */
+main li:not(:last-child) { margin-bottom: 0.35rem; }
+
+/* [Комбінатор сусіда +]
+   Абзац, що йде одразу після <h2>, — без верхнього відступу. */
+h2 + p { margin-top: 0; }
+
+/* [Атрибутний селектор + псевдоелемент ::after]
+   Зовнішні посилання (href починається з http) отримують стрілку ↗. */
+a[href^="http"]::after { content: " \2197"; font-size: 0.85em; }
+
+/* [Псевдоелемент ::before] Декоративна синя смужка перед заголовками h2. */
+main h2::before {
+  content: "";
+  display: inline-flex;
+  width: 0.35rem;
+  height: 1em;
+  margin-right: 0.6rem;
+  background: var(--color-accent);
+  border-radius: var(--radius-pill);
+  vertical-align: -0.1em;
+}
+
+/* [Псевдоелемент ::marker] Маркери списків у <main> — акцентного кольору. */
+main ul li::marker { color: var(--color-accent); }
+
+/* ---------- details / summary ---------- */
+details {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.75rem;
+}
+summary { cursor: pointer; font-weight: 700; color: var(--color-brand); }
+
+/* ---------- «Пігулки» функцій (5G, NFC, IP68) ---------- */
+.pill {
+  display: inline-flex;
+  padding: 0.15rem 0.7rem;
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-pill);
+  background: var(--color-pill-bg);
+  color: var(--color-accent);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+/* [Комбінатор сусіда +] Друга й наступні «пігулки» поспіль — із відступом зліва. */
+.pill + .pill { margin-left: 0.35rem; }
+
+/* ---------- Таблиця каталогу (LR2) ---------- */
+/* Широка таблиця прокручується всередині власного контейнера, а не сторінки */
+.table-wrap { overflow-x: auto; }
+.table-wrap table { min-width: 32rem; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space) 0 calc(var(--space) * 2);
+  /* Запасне значення: якщо змінну --shadow не оголошено (або видалено з :root),
+     браузер візьме друге значення після коми; без нього тінь просто зникла б. */
+  box-shadow: var(--shadow, 0 2px 8px rgb(0 0 0 / 10%));
+}
+
+caption {
+  caption-side: top;
+  text-align: left;
+  font-weight: 700;
+  color: var(--color-brand);
+  padding-bottom: 0.5rem;
+}
+
+th, td {
+  border: 1px solid var(--color-border);
+  padding: 0.6rem 0.85rem;
+  text-align: left;
+}
+
+thead th { background: var(--color-brand); color: var(--color-on-brand); }
+
+/* Числові колонки (3–5: рік, екран, акумулятор) — праворуч */
+th:nth-child(n+3), td:nth-child(n+3) { text-align: right; }
+
+/* Зебра. Формула an+b: even дорівнює 2n, тобто n = 0, 1, 2, 3…
+   дає 0, 2, 4, 6… — обираються 2-й, 4-й, 6-й рядки тіла таблиці
+   (кожен другий, починаючи з другого). Варіант odd (2n+1) обрав би 1-й, 3-й, 5-й. */
+tbody tr:nth-child(even) { background: var(--color-surface); }
+
+/* Підсвітка під курсором: стоїть після зебри, бо специфічність однакова */
+tbody tr:hover { background: var(--color-pill-bg); }
+
+/* ---------- Форма замовлення (LR3) ---------- */
+form fieldset {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  margin: 0 0 var(--space);
+  padding: var(--space) calc(var(--space) * 1.5);
+}
+legend { font-weight: 700; color: var(--color-brand); padding: 0 0.5rem; }
+
+label { display: inline-flex; margin: 0.75rem 0 0.25rem; }
+
+/* Поля однакової ширини (крім радіо, чекбоксів і кнопок) */
+form input:not([type="radio"], [type="checkbox"], [type="submit"], [type="reset"]),
+form select,
+form textarea {
+  display: block;
+  width: 100%;
+  max-width: 28rem;
+  padding: 0.55rem 0.75rem;
+  font: inherit;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-muted);
+  border-radius: var(--radius);
+}
+
+input[type="radio"], input[type="checkbox"] { accent-color: var(--color-accent); }
+
+/* Стани полів. Чому :focus:invalid, а не просто :invalid: порожні обов'язкові
+   поля є :invalid одразу після завантаження, тож без :focus уся сторінка
+   стала б червоною до того, як користувач щось ввів. З :focus підсвічується
+   лише те поле, у якому зараз друкують. */
+input:focus:invalid, select:focus:invalid, textarea:focus:invalid {
+  border-color: var(--color-invalid);
+  background: var(--color-invalid-bg);
+  outline: 2px solid var(--color-invalid);
+}
+input:focus:valid, select:focus:valid, textarea:focus:valid {
+  border-color: var(--color-valid);
+  background: var(--color-valid-bg);
+  outline: 2px solid var(--color-valid);
+}
+
+/* [Псевдоклас :checked] Позначені радіо й чекбокси отримують обведення. */
+input[type="radio"]:checked, input[type="checkbox"]:checked {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* [Псевдоклас :disabled] Вимкнені поля виглядають приглушено. */
+input:disabled, select:disabled, textarea:disabled {
+  background: var(--color-surface);
+  color: var(--color-muted);
+  cursor: not-allowed;
+}
+
+/* Позначка обов'язкових полів псевдоелементом ::after: зірочка після підпису.
+   Перший селектор — поле одразу після label, другий — поле всередині label. */
+label:has(+ :required)::after,
+label:has(:required)::after {
+  content: " *";
+  color: var(--color-invalid);
+}
+
+/* Кнопки різняться атрибутним селектором за type, без доданих класів */
+button, input[type="submit"], input[type="reset"] {
+  padding: 0.6rem 1.4rem;
+  font: inherit;
+  font-weight: 700;
+  border-radius: var(--radius);
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+button[type="submit"], input[type="submit"] {
+  background: var(--color-accent);
+  color: var(--color-on-brand);
+  border: 1px solid var(--color-accent);
+}
+button[type="submit"]:hover, input[type="submit"]:hover {
+  background: var(--color-brand);
+  border-color: var(--color-brand);
+}
+button[type="reset"], input[type="reset"] {
+  background: var(--color-bg);
+  color: var(--color-brand);
+  border: 1px solid var(--color-muted);
+}
+
+/* --- Демонстрація специфічності ---
+   Елемент: заголовок h1 у шапці (<header class="site-header" id="promo">).
+   Претенденти на колір заголовка:
+   h1                → (0,0,1)
+   .site-header h1   → (0,1,1)
+   #promo h1         → (1,0,1)  ← перемагає
+   Трійки (a,b,c) порівнюємо зліва направо, як номер версії:
+   a — кількість id, b — класів/атрибутів/псевдокласів, c — елементів.
+   У #promo h1 одиниця в першій колонці, тому решта вже не має значення.
+   Скільки б класів я не додав, вони не наздоженуть один id —
+   саме тому id для стилів не використовують.
+*/
+/* h1 { color: var(--color-text); } */
+/* .site-header h1 { color: var(--color-muted); } */
+#promo h1 { color: var(--color-accent); }
+
+/* Inline-стиль: <h1 style="color: var(--color-muted)">
+   Він має специфічність (1,0,0,0) — вищу за будь-який селектор у цьому файлі,
+   тому переміг би всі три правила. Це поганий спосіб виграти: стиль змішується
+   з розміткою, його не можна перевизначити зі styles.css інакше, ніж зробивши ще специфічніший селектор
+   і не можна перевикористати на інших елементах. */
+
+/* ---------- ЛР5: банер із градієнтом ---------- */
+/* position: relative робить банер точкою відліку для абсолютного ::after;
+   overflow: hidden обрізає частину кола, що виступає за межі банера. */
+.banner {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  padding: 2.5rem 2rem;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--color-banner-from), var(--color-banner-to));
+  color: var(--color-on-brand);
+}
+.banner h2 { margin-top: 0; color: var(--color-on-brand); }
+.banner h2::before { display: none; }
+.banner::after {
+  content: "";
+  position: absolute;
+  top: -3rem;
+  right: -3rem;
+  width: 12rem;
+  height: 12rem;
+  border: 2rem solid var(--color-on-brand);
+  border-radius: 50%;
+  opacity: 0.12;
+}
+
+/* ===== Адаптив (mobile-first) =====
+   база              — телефон,  ≤ 767px
+   min-width: 768px  — планшет, 768–1023px
+   min-width: 1024px — десктоп, ≥ 1024px
+   Медіазапити лише через min-width і лежать поруч зі своїм компонентом.
+*/
+
+/* ---------- ЛР5: картки смартфонів ---------- */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--min-col), 1fr));
+  gap: var(--gap);
+  margin: var(--space) 0 calc(var(--space) * 2);
+}
+
+/* Число колонок каталогу міняємо значенням --min-col, а не repeat(N, 1fr) */
+@media (min-width: 768px) {
+  .cards { --min-col: 220px; }
+}
+@media (min-width: 1024px) {
+  .cards { --min-col: 200px; }
+}
+
+/* position: relative — бейдж відраховується від кутів картки;
+   overflow: hidden — фото обрізається по заокруглених кутах. */
+.card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow, 0 2px 8px rgb(0 0 0 / 10%));
+}
+
+/* Вертикальні пропорції 3:4; object-fit: cover заповнює область без спотворень */
+.card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.card-body { padding: var(--space); }
+.card p { margin: 0 0 0.25rem; }
+.card-brand { color: var(--color-muted); }
+.card-sku { font-size: 0.875rem; color: var(--color-muted); }
+
+/* Довга назва моделі обрізається трьома крапками */
+.card h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Бейдж «Новинка» у правому верхньому куті картки */
+.badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 1;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  color: var(--color-on-brand);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+/* ---------- ЛР5: липка шапка ---------- */
+/* sticky + top: 0 — шапка разом із меню лишається вгорі під час прокручування;
+   z-index: 100 тримає її над картками та бейджами. */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow, 0 2px 8px rgb(0 0 0 / 10%));
+}
+
+/* ---------- ЛР5: схлопування відступів ---------- */
+.box {
+  padding: 1rem;
+  background: var(--color-pill-bg);
+  border: 1px solid var(--color-border);
+}
+.box-a { margin-bottom: 2rem; }
+.box-b { margin-top: 1rem; }
+/* Звичайний потік: відстань між A і B = 2rem (більший із відступів).
+   Flex-контейнер: відступи не схлопуються, відстань = 2rem + 1rem = 3rem. */
+.stack-flex { display: flex; flex-direction: column; }
+
+/* ---------- LR6: нутрощі картки на Flexbox ---------- */
+/* margin-top: auto віддає блоку весь вільний простір над ним: так само, як
+   margin: 0 auto віддає весь вільний простір бічним відступам і центрує блок,
+   тут увесь залишок висоти картки опиняється зверху, а рядок дій — унизу. */
+.card__actions {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: auto;
+  padding: 0 var(--space) var(--space);
+}
+.card__action,
+.card__actions button {
+  flex: 1;
+  margin: 0;
+  padding: var(--space-sm) var(--space);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius);
+  font-weight: 700;
+  text-align: center;
+}
+.card__action:link,
+.card__action:visited {
+  background: var(--color-accent);
+  color: var(--color-on-brand);
+  text-decoration: none;
+}
+.card__action:hover { background: var(--color-brand); color: var(--color-on-brand); }
+.card__actions button {
+  background: var(--color-bg);
+  color: var(--color-brand);
+  border-color: var(--color-muted);
+}
+
+/* ---------- LR6: шапка й меню на Flexbox ---------- */
+/* Назва сайту ліворуч, меню праворуч: їх розсуває justify-content: space-between */
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+}
+.site-header nav {
+  margin-right: var(--space);
+  background: var(--color-brand);
+  border-radius: var(--radius);
+}
+.site-header nav ul {
+  display: flex;
+  gap: var(--space-sm);
+  margin: 0;
+  padding: var(--space-sm);
+  list-style: none;
+}
+/* letter-spacing задано тільки тут — де текст у верхньому регістрі */
+.site-header nav a {
+  display: block;
+  padding: var(--space-sm) var(--space);
+  border-radius: var(--radius);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.875rem;
+}
+.site-header nav a:link,
+.site-header nav a:visited { color: var(--color-on-brand); text-decoration: none; }
+.site-header nav a:hover { background: var(--color-accent); color: var(--color-on-brand); }
+.site-header nav a:focus-visible { outline-color: var(--color-on-brand); }
+/* Поточна сторінка: стоїть після :hover, щоб виграти за порядком */
+.site-header nav a.current { background: var(--color-bg); color: var(--color-brand); }
+
+/* ---------- Макет сторінки: mobile-first ---------- */
+/* База — телефон: одна колонка, порядок зон nav → main → side → foot.
+   <header> лишається за межами .layout, щоб шапка могла бути липкою. */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "nav"
+    "main"
+    "side"
+    "foot";
+  grid-template-rows: auto 1fr auto auto;   /* росте main, тому футер унизу */
+  gap: var(--gap);
+  width: min(100%, 1200px);
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space);
+}
+.layout__nav    { grid-area: nav; }
+.layout__main   { grid-area: main; }
+.layout__aside  { grid-area: side; }
+.layout__footer { grid-area: foot; }
+
+/* Дозволяє колонці 1fr стискатися, коли всередині широкий вміст */
+.layout > * { min-width: 0; }
+
+/* Глобальні відступи main у макеті не потрібні: ними керує сітка */
+.layout__main { max-width: none; margin: 0; padding: 0; }
+
+.layout__nav,
+.layout__aside {
+  align-self: start;
+  padding: var(--space);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+.layout__nav h2,
+.layout__aside h2 { margin-top: 0; font-size: 1.1rem; }
+.layout__nav ul,
+.layout__aside ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.layout__aside label {
+  align-items: center;
+  gap: var(--space-sm);
+  margin: 0;
+}
+
+/* Планшет: дві колонки, рубрики горизонтальним рядом над ними */
+@media (min-width: 768px) {
+  .layout {
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas:
+      "nav  nav"
+      "main side"
+      "foot foot";
+    grid-template-rows: auto 1fr auto;
+  }
+  .layout__nav ul { flex-direction: row; flex-wrap: wrap; }
+}
+
+/* Десктоп: рівно та схема, що була в ЛР6 */
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: var(--sidebar) 1fr var(--sidebar);
+    grid-template-areas:
+      "nav  main side"
+      "foot foot foot";
+    grid-template-rows: 1fr auto;
+  }
+  .layout__nav ul { flex-direction: column; }
+}
+
+/* ---------- LR6: притиснутий футер ---------- */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+/* Росте сам макет (flex: 1), а не висота через height: 100%: у flex-колонці
+   flex: 1 віддає макету весь вільний простір між шапкою й низом вікна, тоді
+   як height: 100% не знає висоти батька з min-height і нічого не розтягує. */
+.layout { flex: 1; }   /* рядки сітки задано в блоці макета, по брейкпоінтах */
+main { flex: 1; width: 100%; }                        /* на form.html, де .layout немає */
+
+/* ---------- LR6: модальне вікно <dialog> ---------- */
+/* z-index тут не потрібен: showModal() виводить вікно у «верхній шар» браузера
+   (top layer), який малюється над усім документом, а липка шапка з LR5 була
+   звичайним елементом сторінки й мусила обганяти картки за порядком накладання. */
+dialog {
+  width: min(90%, 420px);
+  padding: var(--space-lg);
+  border: none;
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: 0 12px 28px rgb(0 0 0 / 35%);
+}
+dialog::backdrop { background: rgb(0 0 0 / 55%); }
+dialog h2 { margin-top: 0; }
+dialog button {
+  padding: var(--space-sm) var(--space);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius);
+  background: var(--color-accent);
+  color: var(--color-on-brand);
+  font-weight: 700;
+}
+/* Поки вікно відкрите, сторінка позаду не прокручується */
+body:has(dialog[open]) { overflow: hidden; }
+
+/* ---------- LR7: анімація появи модалки ---------- */
+@keyframes fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes pop {
+  from { opacity: 0; transform: translateY(24px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+/* both = backwards + forwards: до старту блок стоїть у першому кадрі, а після
+   завершення лишається в останньому. Без нього за наявності затримки блок на мить
+   показався б у звичайному вигляді, а після кінця стрибком повернувся б до стилів
+   поза анімацією. Тло з'являється швидше (200ms), саме вікно «доганяє» (280ms). */
+dialog[open] { animation: pop 280ms ease-out both; }
+dialog[open]::backdrop { animation: fade 200ms ease-out both; }
+
+/* ---------- LR7: індикатор завантаження (заготовка для LR10) ---------- */
+.loader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin: var(--space) 0;
+}
+.loader p { margin: 0; }
+/* display: flex перебиває UA-правило [hidden], тому приховування повертаємо явно */
+.loader[hidden] { display: none; }
+
+.spinner {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border: 6px solid var(--color-surface);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  /* linear дає сталу швидкість обертання; з ease коло розганялося б і гальмувало
+     в кожному обороті, тож спінер виглядав би таким, що смикається й підвисає. */
+  animation: spin 900ms linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- LR7: повага до prefers-reduced-motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+/* Тонше правило: замість руху лишаємо безпечний відгук — зміну кольору */
+@media (prefers-reduced-motion: reduce) {
+  .card:hover,
+  .card:focus-within {
+    transform: none;
+    background: var(--color-surface);
+  }
+  .card:hover .card__img,
+  .card:focus-within .card__img { transform: none; }
+}
+
+/* ---------- LR8: блок «Демонстрація роботи» ---------- */
+/* white-space: pre-line зберігає символи нового рядка (\n) із тексту й переносить
+   довгі рядки за шириною, а без нього браузер трактував би \n як звичайний пробіл
+   і всі рядки результату склеїлися б в один абзац. */
+.js-out {
+  max-width: none;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  font-family: ui-monospace, monospace;
+  background: var(--color-surface);
+  padding: var(--space);
+  border-radius: var(--radius);
+  line-height: 1.7;
+}
