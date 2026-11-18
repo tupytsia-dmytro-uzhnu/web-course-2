@@ -1,4 +1,6 @@
 // ===== Дані варіанта 10: каталог смартфонів =====
+// Дані набрано вручну зі спрощеного variant10.json; у LR10 вони переїдуть у зовнішній файл
+// data.json і завантажуватимуться через fetch.
 // const забороняє лише перепризначити саму змінну phones, а не змінити вміст масиву,
 // тому метод push, що додає елемент у той самий масив, працює без помилок.
 const phones = [
@@ -9,6 +11,9 @@ const phones = [
     segment: "флагман",
     year: 2024,
     battery: 4000,
+    sku: "SKU-PH-11450",
+    img: "images/galaxy-s24.jpg",
+    description: "Флагман Samsung із потужним процесором, чудовою камерою та яскравим екраном AMOLED. Підтримує 5G, NFC і захист IP68, а акумулятор витримує весь день активної роботи.",
     camera: { mainMp: 50, ultraWideMp: 12, teleMp: 10, video: "8K" },
     sensors: ["акселерометр", "гіроскоп", "датчик наближення", "сканер відбитка", "барометр"],
     features: ["5G", "NFC", "IP68", "бездротова зарядка"]
@@ -20,6 +25,9 @@ const phones = [
     segment: "середній клас",
     year: 2024,
     battery: 5000,
+    sku: "SKU-PH-11451",
+    img: "images/galaxy-a55.jpg",
+    description: "Доступна модель із великим екраном і ємною батареєю.",
     camera: { mainMp: 50, ultraWideMp: 12, teleMp: 0, video: "Full HD" },
     sensors: ["акселерометр", "гіроскоп", "датчик наближення", "сканер відбитка"],
     features: ["5G", "NFC", "IP67"]
@@ -31,6 +39,9 @@ const phones = [
     segment: "преміум",
     year: 2023,
     battery: 3349,
+    sku: "SKU-PH-11452",
+    img: "images/iPhone-15.jpg",
+    description: "Смартфон Apple з камерою 48 Мп і зарядкою через USB-C.",
     camera: { mainMp: 48, ultraWideMp: 12, teleMp: 0, video: "4K" },
     sensors: ["акселерометр", "гіроскоп", "барометр", "датчик освітленості", "компас"],
     features: ["5G", "NFC", "IP68", "бездротова зарядка"]
@@ -42,6 +53,9 @@ const phones = [
     segment: "бюджетний",
     year: 2023,
     battery: 5000,
+    sku: "SKU-PH-11453",
+    img: "images/xiaomi-redmi-note-12.jpg",
+    description: "Бюджетна новинка Xiaomi з екраном AMOLED.",
     camera: { mainMp: 48, ultraWideMp: 8, teleMp: 0, video: "Full HD" },
     sensors: ["акселерометр", "гіроскоп", "сканер відбитка", "інфрачервоний порт"],
     features: ["NFC", "швидка зарядка"]
@@ -53,6 +67,9 @@ const phones = [
     segment: "преміум",
     year: 2022,
     battery: 4355,
+    sku: "SKU-PH-11454",
+    img: "images/images.jpeg",
+    description: "Смартфон Google з обчислювальною фотографією та чистим Android.",
     camera: { mainMp: 50, ultraWideMp: 12, teleMp: 0, video: "4K" },
     sensors: ["акселерометр", "гіроскоп", "барометр", "сканер відбитка", "датчик освітленості"],
     features: ["5G", "NFC", "IP68", "бездротова зарядка"]
@@ -64,9 +81,40 @@ const phones = [
     segment: "складаний",
     year: 2023,
     battery: 3700,
+    sku: "SKU-PH-11455",
+    img: "images/samsung-galaxy-s23.jpg",
+    description: "Складаний смартфон Samsung із зовнішнім екраном для швидких дій і компактним корпусом.",
     camera: { mainMp: 12, ultraWideMp: 12, teleMp: 0, video: "4K" },
     sensors: ["акселерометр", "гіроскоп", "датчик Холла", "сканер відбитка"],
     features: ["5G", "NFC", "IPX8", "бездротова зарядка"]
+  },
+  {
+    id: 7,
+    model: "iPhone 14",
+    brand: "Apple",
+    segment: "преміум",
+    year: 2022,
+    battery: 3279,
+    sku: "SKU-PH-11456",
+    img: "images/images.jpeg",
+    description: "Надійний смартфон Apple з режимом Cinematic.",
+    camera: { mainMp: 12, ultraWideMp: 12, teleMp: 0, video: "4K" },
+    sensors: ["акселерометр", "гіроскоп", "барометр", "датчик освітленості"],
+    features: ["5G", "NFC", "IP68", "бездротова зарядка"]
+  },
+  {
+    id: 8,
+    model: "Xiaomi 13",
+    brand: "Xiaomi",
+    segment: "флагман",
+    year: 2023,
+    battery: 4500,
+    sku: "SKU-PH-11457",
+    img: "images/xiaomi-redmi-note-12.jpg",
+    description: "Флагман Xiaomi з камерою Leica, швидкою зарядкою та яскравим екраном AMOLED, що добре видно навіть на сонці.",
+    camera: { mainMp: 50, ultraWideMp: 12, teleMp: 10, video: "8K" },
+    sensors: ["акселерометр", "гіроскоп", "сканер відбитка", "інфрачервоний порт", "барометр"],
+    features: ["5G", "NFC", "швидка зарядка", "бездротова зарядка"]
   }
 ];
 
@@ -155,7 +203,63 @@ const statsForPhones = (items) => {
   };
 };
 
+// ===== LR9: створення елементів і рендер карток =====
+
+// Приймає тег, клас і (необов'язково) текст, повертає новий елемент; текст кладе тільки через textContent.
+const el = (tag, className, text) => {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined) node.textContent = text;
+  return node;
+};
+
+// Приймає масив смартфонів і малює з нього картки в контейнері #cards; попередній вміст контейнера видаляється.
+function renderCards(list) {
+  const container = document.getElementById("cards");
+  container.replaceChildren();
+  for (const item of list) {
+    const card = document.createElement("article");
+    card.className = "card";
+    card.dataset.id = item.id;
+
+    // Клас бейджа залежить від даних: нові моделі — акцентний, старші — приглушений (модифікатор --old)
+    const isNew = item.year >= 2023;
+    const badge = el("span", isNew ? "badge" : "badge badge--old", isNew ? "Новинка" : "Раніше");
+
+    // У img дані йдуть у src і alt, а не в розмітку
+    const img = el("img", "card__img");
+    img.src = item.img;
+    img.alt = `Смартфон ${item.brand} ${item.model}`;
+
+    const title = el("h3", "", item.model);
+    title.title = item.model;
+    const body = el("div", "card-body");
+    body.append(
+      title,
+      el("p", "card-brand", item.brand),
+      el("p", "", `Рік: ${item.year}`),
+      el("p", "card-sku", item.sku),
+      el("p", "card-desc", item.description)
+    );
+
+    const action = el("a", "card__action", "Детальніше");
+    action.href = "#";
+    const actions = el("div", "card__actions");
+    actions.append(action);
+
+    card.append(badge, img, body, actions);
+    container.append(card);
+  }
+}
+
+// Малює всі смартфони при завантаженні каталогу (на інших сторінках контейнера немає).
+function initCatalog() {
+  if (document.getElementById("cards") === null) return;
+  renderCards(phones);
+}
+
 // ===== Вивід на сторінку (блок викликів show) =====
+if (document.getElementById("demo") !== null) {
 show("out-count", `Моделей у каталозі: ${phones.length}`);
 show("out-numbered", numberedList(phones));
 show("out-categories", phones.map((p) => `${p.model} → ${categoryOf(p)}`));
@@ -195,3 +299,8 @@ show("out-stats", [
   `Різних сегментів: ${stats.categories}`,
   `Унікальні датчики (${sensors.length}): ${sensors.join(", ")}`
 ]);
+}
+
+// ===== LR9: запуск =====
+console.log(phones.length);
+initCatalog();

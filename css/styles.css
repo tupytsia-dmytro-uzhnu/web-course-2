@@ -699,3 +699,6 @@ dialog[open]::backdrop { animation: fade 200ms ease-out both; }
   border-radius: var(--radius);
   line-height: 1.7;
 }
+
+/* ---------- LR9: модифікатор бейджа (стан «старша модель») ---------- */
+.badge--old { background: var(--color-muted); }
