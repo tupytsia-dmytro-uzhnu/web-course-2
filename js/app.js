@@ -326,6 +326,152 @@ function initDialog() {
   document.getElementById("d-close").addEventListener("click", () => dlg.close());
 }
 
+// ===== LR9: тост =====
+
+let toastTimer = null; // id поточного таймера: потрібен, щоб скасувати його при новому повідомленні
+
+// Приймає текст, показує його у блоці #toast і ховає через 2,5 секунди.
+const showToast = (text) => {
+  const toast = document.getElementById("toast");
+  if (toast === null) return;
+  toast.textContent = text;
+  toast.hidden = false;
+  // clearTimeout потрібен, бо без нього старий таймер спрацював би через свої 2,5 с і сховав би
+  // нове повідомлення передчасно, хоча воно щойно з'явилося.
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toast.hidden = true;
+  }, 2500);
+};
+
+// ===== LR9: форма замовлення =====
+
+// Приймає елемент форми, повертає ключ його блока помилки: для груп перемикачів і прапорців name, для решти id або name.
+const errorKey = (control) =>
+  control.type === "radio" || control.type === "checkbox"
+    ? control.name || control.id
+    : control.id || control.name;
+
+// Приймає елемент форми, повертає (за потреби створює) порожній span.error для нього.
+const errorSlot = (control) => {
+  const key = errorKey(control);
+  let slot = document.getElementById(`err-${key}`);
+  if (slot === null) {
+    slot = el("span", "error");
+    slot.id = `err-${key}`;
+    control.insertAdjacentElement("afterend", slot);
+  }
+  return slot;
+};
+
+// Приймає елемент форми, повертає підпис для квитанції (текст label або name).
+const captionOf = (control) => {
+  const label = control.id !== "" ? document.querySelector(`label[for="${control.id}"]`) : null;
+  return label !== null ? label.textContent.trim() : control.name || control.id;
+};
+
+// Власна перевірка через setCustomValidity: pattern дозволяє будь-які дві літери групи,
+// а для смартфонів група має бути саме PH.
+const checkSkuGroup = (input) => {
+  const code = input.value.trim();
+  if (/^SKU-[A-Z]{2}-/.test(code) && !code.startsWith("SKU-PH-")) {
+    input.setCustomValidity("Для смартфонів код має починатися з SKU-PH-");
+  } else {
+    // Обов'язково скидаємо повідомлення: інакше поле лишилося б невалідним назавжди.
+    input.setCustomValidity("");
+  }
+};
+
+// Перевіряє всі поля форми, виводить повідомлення під ними й повертає true, якщо помилок немає.
+function validateForm(form) {
+  let valid = true;
+  const shown = new Set(); // щоб для групи перемикачів показати повідомлення один раз
+  for (const control of form.elements) {
+    if (!control.willValidate) continue;
+    const key = errorKey(control);
+    if (key === "") continue;
+    const ok = control.checkValidity();
+    control.classList.toggle("invalid", !ok);
+    if (!ok) valid = false;
+    if (!ok && !shown.has(key)) {
+      errorSlot(control).textContent = control.validationMessage;
+      shown.add(key);
+    } else if (ok && !shown.has(key)) {
+      errorSlot(control).textContent = "";
+    }
+  }
+  return valid;
+}
+
+// Приймає форму, повертає масив рядків «Підпис: значення»; значення різних типів читаються по-різному.
+const collectReceipt = (form) => {
+  const lines = [];
+  const done = new Set();
+  for (const control of form.elements) {
+    if (!control.willValidate || errorKey(control) === "") continue;
+    if (control.type === "radio") {
+      if (done.has(control.name)) continue;
+      done.add(control.name);
+      const chosen = form.querySelector(`input[name="${control.name}"]:checked`);
+      lines.push(`${control.name}: ${chosen !== null ? chosen.value : "не обрано"}`);
+    } else if (control.type === "checkbox") {
+      lines.push(`${captionOf(control)}: ${control.checked ? "так" : "ні"}`);
+    } else if (control.type === "number") {
+      lines.push(`${captionOf(control)}: ${Number(control.value)}`);
+    } else if (control.tagName === "SELECT") {
+      lines.push(`${captionOf(control)}: ${control.selectedOptions[0].text}`);
+    } else {
+      lines.push(`${captionOf(control)}: ${control.value.trim()}`);
+    }
+  }
+  return lines;
+};
+
+// Приймає форму й рядки квитанції, будує блок під формою через createElement + textContent.
+const showReceipt = (form, lines) => {
+  let box = document.getElementById("receipt");
+  if (box === null) {
+    box = el("section", "receipt");
+    box.id = "receipt";
+    form.after(box);
+  }
+  box.replaceChildren(el("h2", "", "Замовлення прийнято"), ...lines.map((line) => el("p", "", line)));
+};
+
+// Підключає перевірку до форми замовлення (на сторінках без форми нічого не робить).
+function initForm() {
+  const form = document.querySelector("form");
+  if (form === null) return;
+  form.noValidate = true; // дублює атрибут novalidate на випадок, якщо його немає в розмітці
+  const sku = form.querySelector('input[pattern*="SKU"]');
+
+  form.addEventListener("submit", (event) => {
+    // Ця перевірка в браузері лише зручність для користувача і не є захистом: код на сторінці можна змінити
+    // чи обійти надісланим запитом, тому справжню перевірку даних завжди виконує сервер.
+    event.preventDefault();
+    if (sku !== null) checkSkuGroup(sku);
+    if (!validateForm(form)) {
+      const bad = form.querySelector(".invalid");
+      if (bad !== null) bad.focus();
+      return;
+    }
+    showReceipt(form, collectReceipt(form));
+    showToast("Замовлення надіслано");
+    form.reset();
+  });
+
+  // Поки користувач виправляє поле з помилкою, повідомлення оновлюється одразу
+  form.addEventListener("input", (event) => {
+    const control = event.target;
+    if (sku !== null && control === sku) checkSkuGroup(sku);
+    if (control.classList.contains("invalid")) {
+      const ok = control.checkValidity();
+      control.classList.toggle("invalid", !ok);
+      errorSlot(control).textContent = ok ? "" : control.validationMessage;
+    }
+  });
+}
+
 // ===== Вивід на сторінку (блок викликів show) =====
 if (document.getElementById("demo") !== null) {
 show("out-count", `Моделей у каталозі: ${phones.length}`);
@@ -376,3 +522,5 @@ initCatalog();
 initSearch();
 
 initDialog();
+
+initForm();

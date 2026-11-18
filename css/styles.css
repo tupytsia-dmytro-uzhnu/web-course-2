@@ -727,3 +727,45 @@ dialog[open]::backdrop { animation: fade 200ms ease-out both; }
   border-radius: var(--radius);
 }
 .empty[hidden] { display: none; }
+
+/* ---------- LR9: помилки форми, квитанція, тост ---------- */
+.error {
+  display: block;
+  color: var(--color-invalid);
+  font-size: 0.875rem;
+}
+.error:empty { display: none; }
+
+/* Клас .invalid ставить JavaScript; правила стоять після базових полів форми й перемагають їх за порядком */
+form input.invalid,
+form select.invalid,
+form textarea.invalid {
+  border-color: var(--color-invalid);
+  background: var(--color-invalid-bg);
+}
+form input[type="radio"].invalid,
+form input[type="checkbox"].invalid { outline: 2px solid var(--color-invalid); }
+
+.receipt {
+  margin-top: var(--space-lg);
+  padding: var(--space);
+  background: var(--color-valid-bg);
+  border: 1px solid var(--color-valid);
+  border-radius: var(--radius);
+}
+.receipt p { margin: 0 0 var(--space-sm); }
+
+.toast {
+  position: fixed;
+  right: var(--space);
+  bottom: var(--space);
+  z-index: 200;
+  max-width: min(90%, 22rem);
+  padding: var(--space-sm) var(--space);
+  background: var(--color-brand);
+  color: var(--color-on-brand);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow, 0 2px 8px rgb(0 0 0 / 10%));
+  animation: fade 200ms ease-out both;
+}
+.toast[hidden] { display: none; }

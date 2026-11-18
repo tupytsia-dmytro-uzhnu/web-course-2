@@ -24,7 +24,7 @@
         <p>Оберіть модель, вкажіть складський код, обсяг пам'яті та потрібні функції.
             Після відправлення менеджер зв'яжеться з вами для підтвердження замовлення.</p>
 
-        <form action="/submit" method="post">
+        <form action="/submit" method="post" novalidate>
             <!-- method="post": форма створює замовлення, тому повторне надсилання
            по F5 не має відбуватися випадково, і дані не повинні лишатися в URL -->
 
@@ -34,13 +34,13 @@
                 <p>
                     <label for="fullname">Прізвище та ім'я:</label><br>
                     <input type="text" id="fullname" name="fullname" placeholder="Тупиця Дмитро" required minlength="2"
-                        maxlength="60" autocomplete="name">
+                        maxlength="60" autocomplete="name"><span class="error" id="err-fullname"></span>
                 </p>
 
                 <p>
                     <label for="email">Електронна пошта:</label><br>
                     <input type="email" id="email" name="email" placeholder="dmytro@example.com" required
-                        autocomplete="email">
+                        autocomplete="email"><span class="error" id="err-email"></span>
                 </p>
 
                 <p>
@@ -52,13 +52,13 @@
                Разом: +380671234567 -->
                     <input type="tel" id="phone" name="phone" placeholder="+380671234567" required
                         pattern="\+380[0-9]{9}" title="Формат: +380 і ще 9 цифр, наприклад +380671234567"
-                        autocomplete="tel">
+                        autocomplete="tel"><span class="error" id="err-phone"></span>
                 </p>
 
                 <p>
                     <label for="delivery_date">Бажана дата доставки:</label><br>
                     <input type="date" id="delivery_date" name="delivery_date" required min="2026-09-01"
-                        max="2027-06-30">
+                        max="2027-06-30"><span class="error" id="err-delivery_date"></span>
                 </p>
             </fieldset>
 
@@ -73,7 +73,7 @@
                         <option value="iphone14">iPhone 14</option>
                         <option value="galaxy_s24">Galaxy S24</option>
                         <option value="galaxy_a55">Galaxy A55</option>
-                    </select>
+                    </select><span class="error" id="err-model"></span>
                 </p>
 
                 <p>
@@ -86,13 +86,13 @@
                Разом: SKU-PH-11450 -->
                     <input type="text" id="sku" name="sku" placeholder="SKU-PH-11450" required
                         pattern="SKU-[A-Z]{2}-[0-9]{5}"
-                        title="Формат: SKU-, дві великі латинські літери, дефіс і п'ять цифр, наприклад SKU-PH-11450">
+                        title="Формат: SKU-, дві великі латинські літери, дефіс і п'ять цифр, наприклад SKU-PH-11450"><span class="error" id="err-sku"></span>
                 </p>
 
                 <p>
                     <label for="quantity">Кількість (від 1 до 5):</label><br>
                     <input type="number" id="quantity" name="quantity" placeholder="2" min="1" max="5" step="1"
-                        required>
+                        required><span class="error" id="err-quantity"></span>
                 </p>
 
                 <p>Обсяг пам'яті:</p>
@@ -123,7 +123,7 @@
                         <option value="ukrposhta">Укрпошта</option>
                         <option value="pickup">Самовивіз</option>
                         <option value="courier">Кур'єр</option>
-                    </select>
+                    </select><span class="error" id="err-shipping"></span>
                 </p>
             </fieldset>
 
@@ -133,7 +133,7 @@
                 <p>
                     <label for="comment">Коментар до замовлення:</label><br>
                     <textarea id="comment" name="comment" rows="4" cols="40"
-                        placeholder="Наприклад: зателефонуйте після 18:00" minlength="10" maxlength="500"></textarea>
+                        placeholder="Наприклад: зателефонуйте після 18:00" minlength="10" maxlength="500"></textarea><span class="error" id="err-comment"></span>
                 </p>
 
                 <p>
@@ -152,6 +152,7 @@
     <footer>
         <p>© 2026 Мобі-Гід. Тупиця Дмитро, ІКС-2</p>
     </footer>
+<div id="toast" class="toast" hidden></div>
 </body>
 
 </html>
