@@ -913,3 +913,7 @@ dialog h3 { margin: var(--space) 0 var(--space-sm); font-size: 1.1rem; }
 
 /* Таблиця характеристик у модалці вужча, ніж таблиця каталогу, тож мінімальну ширину скидаємо */
 .table-wrap .specs-table { min-width: 0; }
+
+/* ---------- LR10: лічильник і підсумок каталогу ---------- */
+.count { margin: 0 0 var(--space-sm); font-weight: 700; }
+.summary { margin: 0 0 var(--space); color: var(--color-muted); }

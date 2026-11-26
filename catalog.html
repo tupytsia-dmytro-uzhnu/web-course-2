@@ -45,17 +45,22 @@
   <div class="controls">
     <label for="q">Пошук</label>
     <input type="search" id="q" placeholder="модель або бренд">
-    <label for="filter">Сегмент</label>
+    <label for="filter">Функція</label>
     <select id="filter">
       <option value="all">усі</option>
-      <option value="флагман">флагман</option>
-      <option value="преміум">преміум</option>
-      <option value="середній клас">середній клас</option>
-      <option value="бюджетний">бюджетний</option>
-      <option value="складаний">складаний</option>
     </select>
-    <label for="nfc"><input type="checkbox" id="nfc"> Лише з NFC</label>
+    <label for="sort">Сортування</label>
+    <select id="sort">
+      <option value="default">за замовчуванням</option>
+      <option value="year-desc">рік: новіші спершу</option>
+      <option value="year-asc">рік: старіші спершу</option>
+      <option value="camera-desc">основна камера: більше Мп</option>
+      <option value="model">за назвою (А→Я)</option>
+    </select>
+    <label for="only-fav"><input type="checkbox" id="only-fav"> Лише в порівнянні (<span id="fav-count">0</span>)</label>
   </div>
+  <p id="count" class="count"></p>
+  <p id="summary" class="summary"></p>
   <p id="empty" class="empty" hidden>Нічого не знайдено. Спробуйте інший запит.</p>
   <p id="load-error" class="load-error" role="alert" hidden></p>
   <div class="loader" hidden>
@@ -271,12 +276,7 @@ grep -c "class=\"banner\"" catalog.html
   </main>
 <aside class="layout__aside">
   <h2>Фільтр за брендом</h2>
-  <ul>
-    <li><label><input type="checkbox" value="Apple"> Apple</label></li>
-    <li><label><input type="checkbox" value="Samsung"> Samsung</label></li>
-    <li><label><input type="checkbox" value="Xiaomi"> Xiaomi</label></li>
-    <li><label><input type="checkbox" value="Google"> Google</label></li>
-  </ul>
+  <ul id="brand-list"></ul>
 </aside>
 
   <footer class="layout__footer">

@@ -31,7 +31,8 @@ function showLoadError(error) {
   box.textContent = `Не вдалося завантажити каталог. Перевірте з'єднання і оновіть сторінку. Технічні подробиці: ${error.message}`;
 }
 
-// Показує спінер, завантажує дані й малює картки; при помилці виводить повідомлення на сторінці.
+// Показує спінер, завантажує дані, вмикає фільтри й малює картки; при помилці виводить повідомлення на сторінці.
+// Фільтри вмикаються лише після завантаження: до await масив ще порожній, і фільтрувати було б нічого.
 // Якщо в записі немає id, id береться з його номера за порядком.
 async function init() {
   const loader = document.querySelector(".loader");
@@ -39,7 +40,9 @@ async function init() {
   try {
     const data = await loadData();
     items = data.map((item, index) => ({ id: index + 1, ...item }));
-    renderCards(items);
+    populateFilters();
+    renderSummary();
+    applyFilters();
   } catch (error) {
     showLoadError(error);
   } finally {
@@ -299,6 +302,104 @@ function initCards() {
   document.getElementById("d-close").addEventListener("click", () => dlg.close());
 }
 
+// ===== Пошук, фільтри, сортування =====
+
+// Приймає масив смартфонів, повертає моделі з найбільшою основною камерою (reduce шукає максимум, filter збирає всі рівні).
+const modelsWithBiggestCamera = (list) => {
+  const biggest = list.reduce((max, p) => (p.camera.main_mp > max ? p.camera.main_mp : max), 0);
+  return list.filter((p) => p.camera.main_mp === biggest);
+};
+
+// Приймає масив смартфонів, повертає масив усіх унікальних датчиків (flatMap розгортає масиви, Set прибирає повтори).
+const uniqueSensors = (list) => [...new Set(list.flatMap((p) => p.sensors))];
+
+// Показує під лічильником підсумок усього каталогу: найбільша камера й кількість унікальних датчиків.
+function renderSummary() {
+  const biggest = modelsWithBiggestCamera(items);
+  const sensors = uniqueSensors(items);
+  document.getElementById("summary").textContent =
+    `Найбільша основна камера (${biggest[0].camera.main_mp} Мп): ${biggest.map((p) => p.model).join(", ")}. ` +
+    `Унікальних датчиків у каталозі: ${sensors.length}.`;
+}
+
+// Заповнює список функцій і бічну панель брендів унікальними значеннями із завантажених даних.
+function populateFilters() {
+  const collator = (a, b) => a.localeCompare(b, "uk");
+
+  const all = el("option", "", "усі");
+  all.value = "all";
+  const options = [...new Set(items.flatMap((p) => p.features))].sort(collator).map((feature) => {
+    const option = el("option", "", feature);
+    option.value = feature;
+    return option;
+  });
+  document.getElementById("filter").replaceChildren(all, ...options);
+
+  const rows = [...new Set(items.map((p) => p.brand))].sort(collator).map((brand) => {
+    const box = document.createElement("input");
+    box.type = "checkbox";
+    box.value = brand;
+    const label = el("label");
+    label.append(box, ` ${brand}`);
+    const row = el("li");
+    row.append(label);
+    return row;
+  });
+  document.getElementById("brand-list").replaceChildren(...rows);
+}
+
+// Приймає масив і режим, повертає НОВИЙ масив у потрібному порядку (оригінал не змінюється).
+function sortItems(list, mode) {
+  const copy = [...list];
+  switch (mode) {
+    case "year-desc":
+      return copy.sort((a, b) => b.year - a.year);
+    case "year-asc":
+      return copy.sort((a, b) => a.year - b.year);
+    case "camera-desc":
+      return copy.sort((a, b) => b.camera.main_mp - a.camera.main_mp);
+    case "model":
+      return copy.sort((a, b) => a.model.localeCompare(b.model, "uk"));
+    default:
+      return copy;
+  }
+}
+
+// Читає всі елементи керування, будує відфільтрований і відсортований масив, перемальовує картки,
+// оновлює лічильник і блок «Нічого не знайдено». Усі умови поєднуються, а не скидають одна одну.
+function applyFilters() {
+  const query = document.getElementById("q").value.trim().toLowerCase();
+  const feature = document.getElementById("filter").value;
+  const onlyFav = document.getElementById("only-fav").checked;
+  const sortMode = document.getElementById("sort").value;
+  const brands = [...document.querySelectorAll("#brand-list input:checked")].map((box) => box.value);
+
+  const filtered = items.filter(
+    (p) =>
+      (query === "" || p.model.toLowerCase().includes(query) || p.brand.toLowerCase().includes(query)) &&
+      (feature === "all" || p.features.includes(feature)) &&
+      (brands.length === 0 || brands.includes(p.brand)) &&
+      (!onlyFav || favorites.includes(p.id))
+  );
+  const result = sortItems(filtered, sortMode);
+
+  renderCards(result);
+  document.getElementById("empty").hidden = result.length > 0;
+  document.getElementById("count").textContent = `Показано ${result.length} із ${items.length}`;
+  document.getElementById("fav-count").textContent = String(favorites.length);
+}
+
+// Підписує поле пошуку, списки, прапорець і бічну панель брендів на події.
+function initControls() {
+  // input спрацьовує на кожну зміну тексту під час набирання, а change лише коли поле втрачає фокус,
+  // тому живий пошук без кнопки «шукати» потребує саме input.
+  document.getElementById("q").addEventListener("input", applyFilters);
+  for (const id of ["filter", "sort", "only-fav"]) {
+    document.getElementById(id).addEventListener("change", applyFilters);
+  }
+  document.getElementById("brand-list").addEventListener("change", applyFilters);
+}
+
 // ===== LR9: тост =====
 
 let toastTimer = null; // id поточного таймера: потрібен, щоб скасувати його при новому повідомленні
@@ -505,5 +606,6 @@ initMenu();
 initTheme();
 if (document.getElementById("cards") !== null) {
   initCards();
+  initControls();
   init();
 }
