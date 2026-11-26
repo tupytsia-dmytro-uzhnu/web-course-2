@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Каталог смартфонів — Мобі-Гід</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+
+  <header class="site-header" id="promo">
+    <h1>Мобі-Гід — довідник смартфонів</h1>
+    <button id="theme" class="theme-toggle" type="button" aria-pressed="false">🌙 Темна тема</button>
+<button id="burger" class="burger" type="button" aria-expanded="false" aria-controls="menu">☰</button>
+<nav id="menu" class="menu" aria-label="Головне меню">
+<ul class="nav__list">
+        <li><a href="index.html">Головна</a></li>
+        <li><a class="current" href="catalog.html">Смартфони</a></li>
+        <li><a href="#">Порівняння</a></li>
+        <li><a href="form.html">Замовлення</a></li>
+        <li><a href="#">Контакти</a></li>
+      </ul>
+</nav>
+  </header>
+
+  <div class="layout">
+<nav class="layout__nav" aria-label="Рубрики каталогу">
+  <h2>Рубрики</h2>
+  <ul>
+    <li><a href="#">Усі смартфони</a></li>
+    <li><a href="#">Флагмани</a></li>
+    <li><a href="#">Середній клас</a></li>
+    <li><a href="#">Новинки 2023+</a></li>
+  </ul>
+</nav>
+<main class="layout__main">
+<section>
+  <div class="banner">
+    <h2>Новинки 2023–2024</h2>
+    <p>Свіжі моделі у «Мобі-Гід»: порівняйте екрани й камери та замовте обраний смартфон.</p>
+  </div>
+
+  <h2>Картки смартфонів</h2>
+  <div class="controls">
+    <label for="q">Пошук</label>
+    <input type="search" id="q" placeholder="модель або бренд">
+    <label for="filter">Сегмент</label>
+    <select id="filter">
+      <option value="all">усі</option>
+      <option value="флагман">флагман</option>
+      <option value="преміум">преміум</option>
+      <option value="середній клас">середній клас</option>
+      <option value="бюджетний">бюджетний</option>
+      <option value="складаний">складаний</option>
+    </select>
+    <label for="nfc"><input type="checkbox" id="nfc"> Лише з NFC</label>
+  </div>
+  <p id="empty" class="empty" hidden>Нічого не знайдено. Спробуйте інший запит.</p>
+  <div class="loader" hidden>
+    <div class="spinner" aria-hidden="true"></div>
+    <p>Завантажуємо каталог…</p>
+  </div>
+  <div class="cards" id="cards"></div>
+</section>
+
+<section>
+  <h2>Схлопування вертикальних відступів</h2>
+  <h3>1. Звичайний потік: відступи схлопуються</h3>
+  <div class="stack">
+    <div class="box box-a">Блок A: margin-bottom 2rem</div>
+    <div class="box box-b">Блок B: margin-top 1rem</div>
+  </div>
+  <h3>2. Flex-контейнер: відступи складаються</h3>
+  <div class="stack stack-flex">
+    <div class="box box-a">Блок A: margin-bottom 2rem</div>
+    <div class="box box-b">Блок B: margin-top 1rem</div>
+  </div>
+</section>
+
+
+
+    <!-- Перше зображення — у видимій зоні, без lazy loading -->
+    <section>
+      <h2>Смартфони в каталозі</h2>
+      <img src="images/smartphones-hero.jpg" alt="Кілька сучасних смартфонів різних брендів, розкладених на столі" width="800" height="450">
+      <p>Тут зібрано моделі смартфонів різних брендів і років випуску — від бюджетних до флагманських. Кожна модель має повний набір характеристик: екран, акумулятор, камеру та підтримувані функції.</p>
+    </section>
+
+    <!-- Розділи каталогу: вкладені списки -->
+    <section>
+      <h2>Розділи каталогу</h2>
+      <ul>
+        <li>За брендом
+          <ul>
+            <li>Samsung
+              <ul>
+                <li>Galaxy S-серія (флагмани)</li>
+                <li>Galaxy A-серія (середній клас)</li>
+              </ul>
+            </li>
+            <li>Xiaomi
+              <ul>
+                <li>Redmi Note</li>
+                <li>Poco</li>
+              </ul>
+            </li>
+            <li>Apple</li>
+            <li>Google Pixel</li>
+          </ul>
+        </li>
+        <li>За ціновою категорією
+          <ul>
+            <li>Бюджетні (до 10 000 грн)</li>
+            <li>Середній клас (10 000–20 000 грн)</li>
+            <li>Флагмани (від 20 000 грн)</li>
+          </ul>
+        </li>
+        <li>За функціями
+          <ul>
+            <li>Підтримка 5G</li>
+            <li>NFC для безконтактної оплати</li>
+            <li>Захист IP68</li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Нумеровані списки: як замовити -->
+    <section>
+      <h2>Як замовити смартфон</h2>
+      <ol>
+        <li>Оберіть модель у каталозі та ознайомтеся з характеристиками.</li>
+        <li>Натисніть «Замовити» на сторінці обраної моделі.</li>
+        <li>Вкажіть бажаний обсяг пам'яті зі списку доступних варіантів.</li>
+        <li>Заповніть контактні дані для зв'язку.</li>
+        <li>Оберіть спосіб доставки — кур'єром або самовивіз.</li>
+      </ol>
+      <p>Після оформлення замовлення менеджер зв'яжеться з вами протягом робочого дня для підтвердження деталей.</p>
+      <ol start="6">
+        <li>Дочекайтеся дзвінка менеджера для підтвердження замовлення.</li>
+        <li>Отримайте смартфон і перевірте комплектацію при отриманні.</li>
+      </ol>
+    </section>
+
+    <!-- Глосарій -->
+    <section>
+      <h2>Глосарій</h2>
+      <dl>
+        <dt>SKU</dt>
+        <dd>Складський ідентифікатор товару у форматі SKU-PH-11450, що дозволяє однозначно визначити модель на складі.</dd>
+
+        <dt>NFC</dt>
+        <dd>Технологія безконтактного зв'язку ближньої дії, яка використовується для оплати смартфоном.</dd>
+
+        <dt>IP68</dt>
+        <dd>Клас захисту корпусу від пилу та занурення у воду на глибину до 1,5 м протягом 30 хвилин.</dd>
+
+        <dt>5G</dt>
+        <dt>NFC</dt>
+        <dd>Обидві функції належать до бездротових технологій зв'язку, що підтримуються частиною моделей каталогу.</dd>
+      </dl>
+    </section>
+
+    <!-- Таблиця даних -->
+    <section>
+      <h2>Таблиця смартфонів</h2>
+      <div class="table-wrap">
+<table>
+        <caption>Характеристики смартфонів каталогу «Мобі-Гід»</caption>
+        <thead>
+          <tr>
+            <th rowspan="2" scope="col">Модель</th>
+            <th rowspan="2" scope="col">Бренд</th>
+            <th colspan="2" scope="colgroup">Характеристики</th>
+            <th rowspan="2" scope="col">Рік випуску</th>
+          </tr>
+          <tr>
+            <th scope="col">Екран</th>
+            <th scope="col">Акумулятор</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Galaxy S23</th>
+            <td rowspan="2">Samsung</td>
+            <td>6.1"</td>
+            <td>3900 мАг</td>
+            <td>2023</td>
+          </tr>
+          <tr>
+            <th scope="row">Galaxy A54</th>
+            <td>6.4"</td>
+            <td>5000 мАг</td>
+            <td>2023</td>
+          </tr>
+          <tr>
+            <th scope="row">Redmi Note 12</th>
+            <td rowspan="2">Xiaomi</td>
+            <td>6.67"</td>
+            <td>5000 мАг</td>
+            <td>2022</td>
+          </tr>
+          <tr>
+            <th scope="row">Poco X5 Pro</th>
+            <td>6.67"</td>
+            <td>5000 мАг</td>
+            <td>2023</td>
+          </tr>
+          <tr>
+            <th scope="row">iPhone 14</th>
+            <td>Apple</td>
+            <td>6.1"</td>
+            <td>3279 мАг</td>
+            <td>2022</td>
+          </tr>
+          <tr>
+            <th scope="row">Pixel 7</th>
+            <td>Google</td>
+            <td>6.3"</td>
+            <td>4355 мАг</td>
+            <td>2022</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+    </section>
+perl -0pi -e 'BEGIN{local $/; open F,"/tmp/cards.html"; $b=<F>; close F} s#(<!-- Details / Summary -->)#$b$1#' catalog.html
+grep -c "class=\"banner\"" catalog.html
+
+    <!-- Details / Summary -->
+    <section>
+      <h2>Характеристики камер</h2>
+<p>Функції: <span class="pill">5G</span> <span class="pill">NFC</span> <span class="pill">IP68</span></p>
+      <details open>
+        <summary>Galaxy S23 — камера</summary>
+        <p>Основна камера 50 Мп, ширококутна 12 Мп, телефото 10 Мп, запис відео у роздільній здатності до 8K.</p>
+      </details>
+
+      <details>
+        <summary>Redmi Note 12 — камера</summary>
+        <p>Основна камера 48 Мп, ширококутна 8 Мп, макрооб'єктив 2 Мп, запис відео у роздільній здатності Full HD.</p>
+      </details>
+
+      <details>
+        <summary>iPhone 14 — камера</summary>
+        <p>Основна камера 12 Мп, ширококутна 12 Мп, запис відео у роздільній здатності до 4K із стабілізацією Cinematic mode.</p>
+      </details>
+
+      <details>
+        <summary>Pixel 7 — камера</summary>
+        <p>Основна камера 50 Мп, ширококутна 12 Мп, запис відео у роздільній здатності до 4K з обчислювальною фотографією Google.</p>
+      </details>
+
+    </section>
+
+    <!-- Друге і третє зображення, одне з figure/figcaption -->
+    <section>
+      <h2>Обрані моделі</h2>
+
+      <figure>
+        <img src="images/samsung-galaxy-s23.jpg" alt="Смартфон Samsung Galaxy S23 чорного кольору, вигляд спереду" width="400" height="500" loading="lazy">
+        <figcaption>Samsung Galaxy S23 — флагманська модель 2023 року з екраном 6.1 дюйма.</figcaption>
+      </figure>
+
+      <img src="images/xiaomi-redmi-note-12.jpg" alt="Смартфон Xiaomi Redmi Note 12 синього кольору, вигляд ззаду" width="400" height="500" loading="lazy">
+
+    </section>
+
+  <section class="demo" id="demo">
+  <h2>Демонстрація роботи</h2>
+  <h3>Усього моделей</h3>
+  <p class="js-out" id="out-count"></p>
+  <h3>Нумерований список моделей</h3>
+  <p class="js-out" id="out-numbered"></p>
+  <h3>Сегменти</h3>
+  <p class="js-out" id="out-categories"></p>
+  <h3>Фільтри</h3>
+  <p class="js-out" id="out-filter"></p>
+  <h3>Сортування</h3>
+  <p class="js-out" id="out-sorted"></p>
+  <h3>Статистика</h3>
+  <p class="js-out" id="out-stats"></p>
+</section>
+</main>
+<aside class="layout__aside">
+  <h2>Фільтр за брендом</h2>
+  <ul>
+    <li><label><input type="checkbox" value="Apple"> Apple</label></li>
+    <li><label><input type="checkbox" value="Samsung"> Samsung</label></li>
+    <li><label><input type="checkbox" value="Xiaomi"> Xiaomi</label></li>
+    <li><label><input type="checkbox" value="Google"> Google</label></li>
+  </ul>
+</aside>
+
+  <footer class="layout__footer">
+    <p>Група 1 2 курс, Тупиця Дмитро, 2026</p>
+    <p>Контакти: info@mobi-gid.example</p>
+</footer>
+</div>
+
+<dialog id="details">
+  <h2 id="d-title"></h2>
+  <p id="d-line1"></p>
+  <p id="d-line2"></p>
+  <p id="d-line3"></p>
+  <button id="d-close" type="button">Закрити</button>
+</dialog>
+
+<div id="toast" class="toast" hidden></div>
+</body>
+</html>
