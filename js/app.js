@@ -24,11 +24,29 @@ async function loadData() {
   return data;
 }
 
-// Завантажує дані й малює картки. Якщо в записі немає id, id береться з його номера за порядком.
+// Приймає помилку й показує на сторінці повідомлення людською мовою з порадою: консоль користувач не відкриває.
+function showLoadError(error) {
+  const box = document.getElementById("load-error");
+  box.hidden = false;
+  box.textContent = `Не вдалося завантажити каталог. Перевірте з'єднання і оновіть сторінку. Технічні подробиці: ${error.message}`;
+}
+
+// Показує спінер, завантажує дані й малює картки; при помилці виводить повідомлення на сторінці.
+// Якщо в записі немає id, id береться з його номера за порядком.
 async function init() {
-  const data = await loadData();
-  items = data.map((item, index) => ({ id: index + 1, ...item }));
-  renderCards(items);
+  const loader = document.querySelector(".loader");
+  loader.hidden = false;
+  try {
+    const data = await loadData();
+    items = data.map((item, index) => ({ id: index + 1, ...item }));
+    renderCards(items);
+  } catch (error) {
+    showLoadError(error);
+  } finally {
+    // finally виконується і після успіху, і після помилки. Якщо сховати спінер у кінці try, то при збої
+    // виконання одразу перейде в catch і спінер лишився б крутитися поруч із повідомленням про помилку.
+    loader.hidden = true;
+  }
 }
 
 // ===== Картки каталогу =====
