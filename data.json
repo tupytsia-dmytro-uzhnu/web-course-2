@@ -1,0 +1,199 @@
+[
+    {
+      "model": "Samsung Galaxy S23",
+      "brand": "Samsung",
+      "year": 2023,
+      "specs": {
+        "screen": "6.1\" AMOLED 120Hz",
+        "cpu": "Snapdragon 8 Gen 2",
+        "ram": "8GB",
+        "storage": ["128GB", "256GB"],
+        "battery_mAh": 3900
+      },
+      "sensors": ["accelerometer", "gyroscope", "barometer", "proximity"],
+      "camera": {
+        "main_mp": 50,
+        "ultraWide_mp": 12,
+        "tele_mp": 10,
+        "video": "8K 30fps"
+      },
+      "features": ["5G", "NFC", "IP68"]
+    },
+    {
+      "model": "iPhone 14",
+      "brand": "Apple",
+      "year": 2022,
+      "specs": {
+        "screen": "6.1\" OLED",
+        "cpu": "A15 Bionic",
+        "ram": "6GB",
+        "storage": ["128GB", "256GB", "512GB"],
+        "battery_mAh": 3279
+      },
+      "sensors": ["accelerometer", "face id", "magnetometer"],
+      "camera": {
+        "main_mp": 12,
+        "ultraWide_mp": 12,
+        "video": "4K 60fps"
+      },
+      "features": ["5G", "MagSafe", "Face ID"]
+    },
+    {
+      "model": "Google Pixel 7",
+      "brand": "Google",
+      "year": 2022,
+      "specs": {
+        "screen": "6.3\" OLED 90Hz",
+        "cpu": "Google Tensor G2",
+        "ram": "8GB",
+        "storage": ["128GB", "256GB"],
+        "battery_mAh": 4355
+      },
+      "sensors": ["accelerometer", "gyroscope", "fingerprint"],
+      "camera": {
+        "main_mp": 50,
+        "ultraWide_mp": 12,
+        "video": "4K 60fps"
+      },
+      "features": ["5G", "Wireless Charging"]
+    },
+    {
+      "model": "Xiaomi Redmi Note 12 Pro",
+      "brand": "Xiaomi",
+      "year": 2023,
+      "specs": {
+        "screen": "6.67\" AMOLED 120Hz",
+        "cpu": "MediaTek Dimensity 1080",
+        "ram": "6GB",
+        "storage": ["128GB", "256GB"],
+        "battery_mAh": 5000
+      },
+      "sensors": ["fingerprint", "accelerometer", "infrared"],
+      "camera": {
+        "main_mp": 108,
+        "ultraWide_mp": 8,
+        "macro_mp": 2,
+        "video": "4K 30fps"
+      },
+      "features": ["5G", "Fast charging 67W", "NFC"]
+    },
+    {
+      "model": "OnePlus 11",
+      "brand": "OnePlus",
+      "year": 2023,
+      "specs": {
+        "screen": "6.7\" AMOLED 120Hz",
+        "cpu": "Snapdragon 8 Gen 2",
+        "ram": "8GB",
+        "storage": ["128GB", "256GB"],
+        "battery_mAh": 5000
+      },
+      "sensors": ["accelerometer", "gyroscope", "compass"],
+      "camera": {
+        "main_mp": 50,
+        "ultraWide_mp": 48,
+        "tele_mp": 32,
+        "video": "8K 24fps"
+      },
+      "features": ["5G", "100W charging", "NFC"]
+    },
+    {
+      "model": "Motorola Edge 40",
+      "brand": "Motorola",
+      "year": 2023,
+      "specs": {
+        "screen": "6.55\" OLED 144Hz",
+        "cpu": "MediaTek Dimensity 8020",
+        "ram": "8GB",
+        "storage": ["256GB"],
+        "battery_mAh": 4400
+      },
+      "sensors": ["accelerometer", "gyroscope", "NFC"],
+      "camera": {
+        "main_mp": 50,
+        "ultraWide_mp": 13,
+        "video": "4K 30fps"
+      },
+      "features": ["Wireless Charging", "Stereo Speakers"]
+    },
+    {
+      "model": "Huawei P50 Pro",
+      "brand": "Huawei",
+      "year": 2021,
+      "specs": {
+        "screen": "6.6\" OLED 120Hz",
+        "cpu": "Snapdragon 888 4G",
+        "ram": "8GB",
+        "storage": ["256GB", "512GB"],
+        "battery_mAh": 4360
+      },
+      "sensors": ["accelerometer", "fingerprint", "infrared"],
+      "camera": {
+        "main_mp": 50,
+        "ultraWide_mp": 13,
+        "tele_mp": 64,
+        "video": "4K 60fps"
+      },
+      "features": ["IP68", "66W charging"]
+    },
+    {
+      "model": "Sony Xperia 5 IV",
+      "brand": "Sony",
+      "year": 2022,
+      "specs": {
+        "screen": "6.1\" OLED 120Hz",
+        "cpu": "Snapdragon 8 Gen 1",
+        "ram": "8GB",
+        "storage": ["128GB", "256GB"],
+        "battery_mAh": 5000
+      },
+      "sensors": ["accelerometer", "gyroscope", "barometer"],
+      "camera": {
+        "main_mp": 12,
+        "ultraWide_mp": 12,
+        "tele_mp": 12,
+        "video": "4K 120fps"
+      },
+      "features": ["5G", "Wireless Charging", "NFC"]
+    },
+    {
+      "model": "Nothing Phone (1)",
+      "brand": "Nothing",
+      "year": 2022,
+      "specs": {
+        "screen": "6.55\" OLED 120Hz",
+        "cpu": "Snapdragon 778G+",
+        "ram": "8GB",
+        "storage": ["128GB", "256GB"],
+        "battery_mAh": 4500
+      },
+      "sensors": ["accelerometer", "gyroscope", "NFC"],
+      "camera": {
+        "main_mp": 50,
+        "ultraWide_mp": 50,
+        "video": "4K 30fps"
+      },
+      "features": ["Transparent design", "Wireless Charging"]
+    },
+    {
+      "model": "Realme GT Neo 5",
+      "brand": "Realme",
+      "year": 2023,
+      "specs": {
+        "screen": "6.74\" AMOLED 144Hz",
+        "cpu": "Snapdragon 8+ Gen 1",
+        "ram": "12GB",
+        "storage": ["256GB", "512GB"],
+        "battery_mAh": 5000
+      },
+      "sensors": ["fingerprint", "accelerometer", "gyroscope"],
+      "camera": {
+        "main_mp": 50,
+        "ultraWide_mp": 8,
+        "macro_mp": 2,
+        "video": "4K 60fps"
+      },
+      "features": ["150W fast charging", "NFC"]
+    }
+  ]
+  
