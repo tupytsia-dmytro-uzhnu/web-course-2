@@ -873,3 +873,43 @@ form input[type="checkbox"].invalid { outline: 2px solid var(--color-invalid); }
   border-radius: var(--radius);
 }
 .load-error[hidden] { display: none; }
+
+/* ---------- LR10: модалка з деталізацією ---------- */
+dialog {
+  width: min(92%, 40rem);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+dialog h3 { margin: var(--space) 0 var(--space-sm); font-size: 1.1rem; }
+
+/* Пари «підпис — значення» */
+.kv {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--space-sm) var(--space);
+  margin: 0 0 var(--space);
+}
+.kv dt { color: var(--color-muted); font-weight: 700; }
+.kv dd { margin: 0; }
+
+/* Списки значень (датчики, варіанти пам'яті) і «пігулки» функцій */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.chips li {
+  padding: 0.15rem 0.7rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+}
+.pills { display: flex; flex-wrap: wrap; gap: var(--space-sm); }
+.pills .pill + .pill { margin-left: 0; }
+.muted { color: var(--color-muted); }
+
+/* Таблиця характеристик у модалці вужча, ніж таблиця каталогу, тож мінімальну ширину скидаємо */
+.table-wrap .specs-table { min-width: 0; }

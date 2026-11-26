@@ -133,6 +133,172 @@ function renderCards(list) {
   }
 }
 
+// ===== Модальне вікно з повною деталізацією =====
+
+// Підписи для ключів об'єкта specs; невідомі ключі виводяться як є (з пробілами замість «_»).
+const LABELS = {
+  screen: "Екран",
+  display: "Екран",
+  battery: "Акумулятор",
+  chipset: "Процесор",
+  processor: "Процесор",
+  cpu: "Процесор",
+  ram: "Оперативна пам'ять",
+  storage: "Вбудована пам'ять",
+  os: "Операційна система",
+  weight: "Вага",
+  charging: "Зарядка"
+};
+
+// Приймає ключ об'єкта, повертає підпис для людини.
+const labelOf = (key) => LABELS[key] ?? key.replaceAll("_", " ");
+
+// Приймає значення будь-якого типу, повертає рядок: числа з розділювачами, логічні як «так/ні», вкладене як «ключ: значення».
+function formatValue(value) {
+  if (value === null || value === undefined) return "—";
+  if (typeof value === "number") return num(value);
+  if (typeof value === "boolean") return value ? "так" : "ні";
+  if (Array.isArray(value)) return value.map((inner) => formatValue(inner)).join(", ");
+  if (typeof value === "object") {
+    return Object.entries(value)
+      .map(([key, inner]) => `${labelOf(key)}: ${formatValue(inner)}`)
+      .join("; ");
+  }
+  return String(value);
+}
+
+// Приймає варіант пам'яті: число (ГБ) стає «128 ГБ» або «1 ТБ», рядок лишається як є.
+const formatStorage = (variant) => {
+  if (typeof variant !== "number") return String(variant);
+  return variant >= 1024 ? `${variant / 1024} ТБ` : `${variant} ГБ`;
+};
+
+// Приймає розмір матриці в мегапікселях, повертає текст; 0 і відсутнє значення означають «немає».
+const mpText = (value) => (value ? `${value} Мп` : "немає");
+
+// Приймає смартфон за id (рядок чи число), повертає його запис або undefined.
+const findItem = (id) => items.find((p) => String(p.id) === String(id));
+
+// Приймає масив пар [підпис, значення], повертає список означень <dl> (createElement + textContent).
+function buildPairs(pairs) {
+  const list = el("dl", "kv");
+  for (const [label, value] of pairs) {
+    list.append(el("dt", "", label), el("dd", "", value));
+  }
+  return list;
+}
+
+// Приймає масив значень, текст для порожнього випадку і функцію форматування; повертає <ul> або абзац-заглушку.
+function buildList(values, emptyText, format = String) {
+  if (values.length === 0) return el("p", "muted", emptyText);
+  const list = el("ul", "chips");
+  for (const value of values) {
+    list.append(el("li", "", format(value)));
+  }
+  return list;
+}
+
+// Приймає масив функцій, повертає ряд «пігулок» із LR4 або текст, якщо функцій немає.
+function buildPills(features) {
+  if (features.length === 0) return el("p", "muted", "додаткових функцій не вказано");
+  const box = el("div", "pills");
+  for (const feature of features) {
+    box.append(el("span", "pill", feature));
+  }
+  return box;
+}
+
+// Приймає об'єкт specs, повертає таблицю «Характеристика — Значення» з thead і tbody, зібрану в коді.
+function buildSpecsTable(specs) {
+  const thead = el("thead");
+  const headRow = el("tr");
+  headRow.append(el("th", "", "Характеристика"), el("th", "", "Значення"));
+  thead.append(headRow);
+
+  const tbody = el("tbody");
+  for (const [key, value] of Object.entries(specs)) {
+    const row = el("tr");
+    const name = el("th", "", labelOf(key));
+    name.scope = "row";
+    const cell = el("td");
+    if (Array.isArray(value)) {
+      // Масив усередині об'єкта (specs.storage) — це перелік варіантів, а не одне значення:
+      // виводимо його списком, а решту полів specs — звичайними рядками.
+      cell.append(buildList(value, "варіанти не вказані", key === "storage" ? formatStorage : formatValue));
+    } else {
+      cell.textContent = formatValue(value);
+    }
+    row.append(name, cell);
+    tbody.append(row);
+  }
+  const table = el("table", "specs-table");
+  table.append(thead, tbody);
+  return table;
+}
+
+// Приймає таблицю, повертає її в контейнері з горизонтальною прокруткою (для ширини 360px).
+const wrapTable = (table) => {
+  const box = el("div", "table-wrap");
+  box.append(table);
+  return box;
+};
+
+// Приймає смартфон і заповнює всі секції модалки; кожен контейнер спершу очищається, щоб дані двох записів не змішувались.
+function fillDialog(item) {
+  const camera = item.camera;
+  document.getElementById("d-title").textContent = `${item.brand} ${item.model}`;
+  document.getElementById("d-main").replaceChildren(
+    buildPairs([
+      ["Бренд", item.brand],
+      ["Рік випуску", String(item.year)],
+      ["Складський код", skuOf(item)]
+    ])
+  );
+  document.getElementById("d-object").replaceChildren(
+    el("h3", "", "Камера"),
+    buildPairs([
+      ["Основна", mpText(camera.main_mp)],
+      ["Надширококутна", mpText(camera.ultraWide_mp)],
+      ["Телеоб'єктив", mpText(camera.tele_mp)],
+      ["Відео", camera.video ? String(camera.video) : "немає"]
+    ])
+  );
+  document.getElementById("d-table").replaceChildren(
+    el("h3", "", "Характеристики"),
+    wrapTable(buildSpecsTable(item.specs))
+  );
+  document.getElementById("d-list").replaceChildren(
+    el("h3", "", "Датчики"),
+    buildList(item.sensors, "датчики не вказані")
+  );
+  document.getElementById("d-features").replaceChildren(
+    el("h3", "", "Функції"),
+    buildPills(item.features)
+  );
+}
+
+// Вішає ОДИН обробник кліку на контейнер карток і відкриває модалку для картки, по якій клікнули.
+function initCards() {
+  const cards = document.getElementById("cards");
+  const dlg = document.getElementById("details");
+
+  // Один слухач на контейнері працює й для карток, створених пізніше: клік «спливає» від кнопки вгору
+  // до #cards, а сам контейнер renderCards не перестворює, а лише міняє його вміст. Якби слухачі
+  // висіли на кнопках, то після кожного перемальовування списку нові кнопки лишалися б «глухими».
+  cards.addEventListener("click", (event) => {
+    const card = event.target.closest(".card");
+    if (!card) return;
+    event.preventDefault(); // посилання href="#" не має гортати сторінку нагору
+    const item = findItem(card.dataset.id);
+    if (!item) return;
+    fillDialog(item);
+    dlg.showModal();
+    dlg.scrollTop = 0;
+  });
+
+  document.getElementById("d-close").addEventListener("click", () => dlg.close());
+}
+
 // ===== LR9: тост =====
 
 let toastTimer = null; // id поточного таймера: потрібен, щоб скасувати його при новому повідомленні
@@ -338,5 +504,6 @@ initForm();
 initMenu();
 initTheme();
 if (document.getElementById("cards") !== null) {
+  initCards();
   init();
 }
