@@ -917,3 +917,14 @@ dialog h3 { margin: var(--space) 0 var(--space-sm); font-size: 1.1rem; }
 /* ---------- LR10: лічильник і підсумок каталогу ---------- */
 .count { margin: 0 0 var(--space-sm); font-weight: 700; }
 .summary { margin: 0 0 var(--space); color: var(--color-muted); }
+
+/* ---------- LR10: кнопка «Порівняти» ---------- */
+/* Рядок дій тепер може переноситись: дві кнопки в вузькій картці не стискаються до нечитабельних */
+.card__actions { flex-wrap: wrap; }
+.card__actions .card__action,
+.card__actions .fav { flex: 1 1 6.5rem; }
+.card__actions .fav[aria-pressed="true"] {
+  background: var(--color-pill-bg);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}

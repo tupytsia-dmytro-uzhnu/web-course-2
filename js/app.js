@@ -4,7 +4,7 @@
 // ===== Стан сторінки =====
 
 let items = []; // заповнюється в init() після fetch("data.json"); раніше це був масив, зашитий у код
-let favorites = []; // id моделей у списку «порівняти»
+let favorites = loadFavorites(); // id моделей у списку «порівняти», прочитані з localStorage
 
 // ===== Завантаження даних =====
 
@@ -129,7 +129,7 @@ function renderCards(list) {
     const action = el("a", "card__action", "Детальніше");
     action.href = "#";
     const actions = el("div", "card__actions");
-    actions.append(action);
+    actions.append(action, makeFavButton(item));
 
     card.append(badge, img, body, actions);
     container.append(card);
@@ -289,6 +289,13 @@ function initCards() {
   // до #cards, а сам контейнер renderCards не перестворює, а лише міняє його вміст. Якби слухачі
   // висіли на кнопках, то після кожного перемальовування списку нові кнопки лишалися б «глухими».
   cards.addEventListener("click", (event) => {
+    // Клік по кнопці «Порівняти» лише перемикає список і не відкриває модалку (ранній return)
+    const fav = event.target.closest(".fav");
+    if (fav) {
+      const marked = findItem(fav.dataset.id);
+      if (marked) toggleFavorite(marked.id);
+      return;
+    }
     const card = event.target.closest(".card");
     if (!card) return;
     event.preventDefault(); // посилання href="#" не має гортати сторінку нагору
@@ -398,6 +405,73 @@ function initControls() {
     document.getElementById(id).addEventListener("change", applyFilters);
   }
   document.getElementById("brand-list").addEventListener("change", applyFilters);
+}
+
+// ===== Пам'ять: localStorage =====
+
+// Повертає масив id із сховища. Захищено від відсутнього ключа, зіпсованого JSON і недоступного сховища.
+function loadFavorites() {
+  try {
+    const raw = localStorage.getItem("favorites");
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+// Приймає масив id і записує його в сховище. Сховище зберігає лише рядки: масив, покладений напряму, став би
+// рядком «1,2,3», тому його перетворюють на JSON через JSON.stringify, а читають назад через JSON.parse.
+function saveFavorites(list) {
+  try {
+    localStorage.setItem("favorites", JSON.stringify(list));
+  } catch (error) {
+    showToast("Не вдалося зберегти список: сховище недоступне");
+  }
+}
+
+// Приймає id смартфона, додає його до списку «порівняти» або прибирає, зберігає список і перемальовує картки.
+function toggleFavorite(id) {
+  const index = favorites.indexOf(id);
+  if (index === -1) {
+    favorites.push(id);
+    showToast("Додано до порівняння");
+  } else {
+    favorites.splice(index, 1);
+    showToast("Прибрано з порівняння");
+  }
+  saveFavorites(favorites);
+  applyFilters();
+}
+
+// Приймає смартфон, повертає кнопку «Порівняти»: її вигляд і aria-pressed залежать від того, чи є id у списку favorites.
+function makeFavButton(item) {
+  const marked = favorites.includes(item.id);
+  const fav = el("button", "fav", marked ? "✓ В порівнянні" : "⚖ Порівняти");
+  fav.type = "button";
+  fav.dataset.id = item.id;
+  fav.setAttribute("aria-pressed", String(marked));
+  fav.setAttribute("aria-label", `${marked ? "Прибрати з порівняння" : "Додати до порівняння"}: ${item.model}`);
+  return fav;
+}
+
+// Повертає збережену тему ("dark" або "light") чи null, якщо вибору ще не було або сховище недоступне.
+function loadTheme() {
+  try {
+    return localStorage.getItem("theme");
+  } catch (error) {
+    return null;
+  }
+}
+
+// Приймає "dark" або "light" і зберігає вибір теми.
+function saveTheme(name) {
+  try {
+    localStorage.setItem("theme", name);
+  } catch (error) {
+    showToast("Не вдалося зберегти тему: сховище недоступне");
+  }
 }
 
 // ===== LR9: тост =====
@@ -593,10 +667,15 @@ const applyTheme = (dark) => {
 function initTheme() {
   const button = document.getElementById("theme");
   if (button === null) return;
-  applyTheme(isDark());
+  // Спершу дивимось у сховище: явний вибір користувача важливіший за системну схему,
+  // а prefers-color-scheme беремо лише тоді, коли користувач ще нічого не вибирав.
+  const saved = loadTheme(); // "dark" | "light" | null
+  const hasChoice = saved === "dark" || saved === "light";
+  applyTheme(hasChoice ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches);
   button.addEventListener("click", () => {
     const next = !isDark();
     applyTheme(next);
+    saveTheme(next ? "dark" : "light");
     showToast(next ? "Увімкнено темну тему" : "Увімкнено світлу тему");
   });
 }
