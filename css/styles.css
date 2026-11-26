@@ -731,21 +731,6 @@ dialog[open]::backdrop { animation: fade 200ms ease-out both; }
   .card:focus-within .card__img { transform: none; }
 }
 
-/* ---------- LR8: блок «Демонстрація роботи» ---------- */
-/* white-space: pre-line зберігає символи нового рядка (\n) із тексту й переносить
-   довгі рядки за шириною, а без нього браузер трактував би \n як звичайний пробіл
-   і всі рядки результату склеїлися б в один абзац. */
-.js-out {
-  max-width: none;
-  white-space: pre-line;
-  overflow-wrap: anywhere;
-  font-family: ui-monospace, monospace;
-  background: var(--color-surface);
-  padding: var(--space);
-  border-radius: var(--radius);
-  line-height: 1.7;
-}
-
 /* ---------- LR9: модифікатор бейджа (стан «старша модель») ---------- */
 .badge--old { background: var(--color-muted); }
 
