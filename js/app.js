@@ -62,6 +62,10 @@ const el = (tag, className, text) => {
 // Приймає число, повертає рядок із розділювачами розрядів за українськими правилами.
 const num = (value) => Number(value).toLocaleString("uk-UA");
 
+// Приймає смартфон, повертає повну назву без дубля бренду: у даних model буває «Samsung Galaxy S23», а буває «iPhone 14».
+const fullName = (item) =>
+  item.model.toLowerCase().includes(item.brand.toLowerCase()) ? item.model : `${item.brand} ${item.model}`;
+
 // Фото беремо за назвою моделі (перший збіг), для невідомих моделей лишається загальне фото.
 const PHOTOS = [
   ["galaxy s24", "images/galaxy-s24.jpg"],
@@ -75,7 +79,7 @@ const FALLBACK_PHOTO = "images/smartphones-hero.jpg";
 
 // Приймає смартфон, повертає шлях до його фото.
 function photoFor(item) {
-  const name = `${item.brand} ${item.model}`.toLowerCase();
+  const name = fullName(item).toLowerCase();
   const found = PHOTOS.find(([key]) => name.includes(key));
   return found ? found[1] : FALLBACK_PHOTO;
 }
@@ -106,7 +110,7 @@ function renderCards(list) {
     // У img дані йдуть у src і alt, а не в розмітку
     const img = el("img", "card__img");
     img.src = photoFor(item);
-    img.alt = `Смартфон ${item.brand} ${item.model}`;
+    img.alt = `Смартфон ${fullName(item)}`;
 
     const title = el("h3", "", item.model);
     title.title = item.model;
